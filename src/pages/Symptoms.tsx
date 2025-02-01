@@ -24,17 +24,36 @@ interface SymptomForm {
 const Symptoms = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [apiKey, setApiKey] = useState<string>("");
   const { toast } = useToast();
-  const form = useForm<SymptomForm>();
+  const form = useForm<SymptomForm>({
+    defaultValues: {
+      symptoms: "",
+      duration: "",
+      severity: "",
+      age: "",
+      gender: "",
+      medicalHistory: "",
+    }
+  });
   const { t } = useLanguage();
 
   const onSubmit = async (data: SymptomForm) => {
+    if (!apiKey) {
+      toast({
+        title: "Error",
+        description: "Please enter your Perplexity API key",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await fetch('https://api.perplexity.ai/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY || ''}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -62,6 +81,10 @@ const Symptoms = () => {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to analyze symptoms');
+      }
+
       const responseData = await response.json();
       setResult(responseData.choices[0].message.content);
       toast({
@@ -71,7 +94,7 @@ const Symptoms = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to analyze symptoms. Please try again.",
+        description: "Failed to analyze symptoms. Please check your API key and try again.",
         variant: "destructive",
       });
     } finally {
@@ -98,6 +121,17 @@ const Symptoms = () => {
                 {t('emergencyWarning')}
               </AlertDescription>
             </Alert>
+
+            <div className="mb-6">
+              <FormLabel>Perplexity API Key</FormLabel>
+              <Input
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="Enter your Perplexity API key"
+                className="mt-1"
+              />
+            </div>
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
