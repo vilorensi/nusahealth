@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAIResponse } from "../../utils/aiHelpers";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const HeroSection = () => {
   const { t, language } = useLanguage();
@@ -26,11 +26,17 @@ const HeroSection = () => {
     setIsLoading(true);
     try {
       const systemPrompt = 'You are a medical AI assistant performing initial symptom assessment. Provide a brief initial assessment and recommend whether the patient should seek immediate medical attention. Keep the response concise.';
-      const response = await getAIResponse(symptoms, systemPrompt);
       
-      // Store the response in the URL state and navigate to the symptoms page
+      const { data, error } = await supabase.functions.invoke('fetch-openai', {
+        body: { message: symptoms, systemPrompt }
+      });
+
+      if (error) throw error;
+      
+      const response = data.choices[0].message.content;
       navigate(`/symptoms?query=${encodeURIComponent(symptoms)}&initial=${encodeURIComponent(response)}`);
     } catch (error) {
+      console.error('Error analyzing symptoms:', error);
       toast({
         title: "Error",
         description: language === 'en' ? "Failed to analyze symptoms. Please try again." : "Gagal menganalisis gejala. Silakan coba lagi.",
