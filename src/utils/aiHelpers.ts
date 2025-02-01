@@ -14,6 +14,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
       throw new Error('Failed to get API key');
     }
 
+    console.log('Making request to OpenAI API...');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -21,7 +22,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "gpt-4o",
         messages: [
           {
             role: 'system',
@@ -44,6 +45,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     }
 
     const data = await response.json();
+    console.log('OpenAI API Response:', data);
     return data.choices[0].message.content;
   } catch (error) {
     console.error('AI Response Error:', error);
