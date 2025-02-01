@@ -110,35 +110,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-
-      {/* Health Topics Section */}
-      <div className="bg-white py-12 mb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-primary mb-8 text-center">
-            {t('popularTopics')}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              "Covid-19",
-              "Diabetes",
-              "Hipertensi",
-              "Kesehatan Mental",
-              "Gizi & Diet",
-              "Kesehatan Anak",
-              "Vaksinasi",
-              "Pertolongan Pertama",
-            ].map((topic) => (
-              <Link
-                key={topic}
-                to={`/topics/${topic.toLowerCase().replace(/ /g, "-")}`}
-                className="p-6 bg-gradient-to-br from-white to-gray-50 rounded-xl text-center hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-primary/20 text-gray-700 hover:text-primary font-medium text-lg"
-              >
-                {topic}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
