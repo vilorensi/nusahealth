@@ -8,8 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
-import { Loader2, AlertCircle, Brain, Activity, Book, Compass } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SymptomForm {
   symptoms: string;
@@ -25,17 +26,47 @@ const Symptoms = () => {
   const [result, setResult] = useState<string | null>(null);
   const { toast } = useToast();
   const form = useForm<SymptomForm>();
+  const { t } = useLanguage();
 
   const onSubmit = async (data: SymptomForm) => {
     setIsLoading(true);
     try {
-      // Here we would integrate with an AI service
-      // For now, we'll simulate a response
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setResult(`Based on the symptoms described (${data.symptoms}), considering your ${data.age}-year-old ${data.gender} profile and medical history, it could be a common condition. However, please consult a healthcare professional for an accurate diagnosis, especially given the ${data.severity} severity level and ${data.duration} duration.`);
+      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY || ''}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-sonar-small-128k-online',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are a medical AI assistant performing initial symptom assessment. Provide clear analysis and always include a disclaimer about consulting healthcare professionals.'
+            },
+            {
+              role: 'user',
+              content: `Patient Information:
+                Age: ${data.age}
+                Gender: ${data.gender}
+                Symptoms: ${data.symptoms}
+                Duration: ${data.duration}
+                Severity: ${data.severity}
+                Medical History: ${data.medicalHistory}
+                
+                Please provide an initial assessment of these symptoms.`
+            }
+          ],
+          temperature: 0.2,
+          max_tokens: 1000,
+        }),
+      });
+
+      const responseData = await response.json();
+      setResult(responseData.choices[0].message.content);
       toast({
-        title: "Analysis Complete",
-        description: "Please review the detailed assessment below.",
+        title: "Assessment Complete",
+        description: "Please review the detailed analysis below.",
       });
     } catch (error) {
       toast({
@@ -49,50 +80,22 @@ const Symptoms = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#C5E1A5]/30">
+    <div className="min-h-screen bg-gradient-to-b from-[#C5E1A5]/30 to-white">
       <Navbar />
       <main className="container mx-auto px-4 py-8">
-        {/* Quick Actions */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-[#F4A261]/20 hover:bg-[#F4A261]/30 transition-colors cursor-pointer">
-            <CardContent className="p-6 flex flex-col items-center">
-              <Brain className="h-8 w-8 mb-2 text-[#264653]" />
-              <span className="text-sm font-medium">Self Assessment</span>
-            </CardContent>
-          </Card>
-          <Card className="bg-[#264653]/10 hover:bg-[#264653]/20 transition-colors cursor-pointer">
-            <CardContent className="p-6 flex flex-col items-center">
-              <Activity className="h-8 w-8 mb-2 text-[#264653]" />
-              <span className="text-sm font-medium">Track Symptoms</span>
-            </CardContent>
-          </Card>
-          <Card className="bg-[#F4A261]/20 hover:bg-[#F4A261]/30 transition-colors cursor-pointer">
-            <CardContent className="p-6 flex flex-col items-center">
-              <Book className="h-8 w-8 mb-2 text-[#264653]" />
-              <span className="text-sm font-medium">Health Guide</span>
-            </CardContent>
-          </Card>
-          <Card className="bg-[#264653]/10 hover:bg-[#264653]/20 transition-colors cursor-pointer">
-            <CardContent className="p-6 flex flex-col items-center">
-              <Compass className="h-8 w-8 mb-2 text-[#264653]" />
-              <span className="text-sm font-medium">Find Help</span>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card className="max-w-3xl mx-auto shadow-lg bg-white/80 backdrop-blur-sm">
-          <CardHeader className="text-center space-y-2">
-            <CardTitle className="text-2xl font-bold text-[#264653]">AI Symptom Assessment</CardTitle>
-            <CardDescription className="text-lg text-[#264653]/80">
-              Get an initial assessment of your symptoms using our advanced AI system
+        <Card className="max-w-3xl mx-auto">
+          <CardHeader>
+            <CardTitle>{t('symptomChecker')}</CardTitle>
+            <CardDescription>
+              {t('symptomCheckerDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Alert className="mb-6 bg-[#F4A261]/20 border-[#F4A261] text-[#264653]">
+            <Alert className="mb-6 bg-[#F4A261]/20 border-[#F4A261]">
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Important Notice</AlertTitle>
+              <AlertTitle>{t('important')}</AlertTitle>
               <AlertDescription>
-                If you're experiencing severe or life-threatening symptoms, please seek immediate medical attention or call emergency services.
+                {t('emergencyWarning')}
               </AlertDescription>
             </Alert>
 
@@ -103,12 +106,12 @@ const Symptoms = () => {
                   name="symptoms"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base text-[#264653]">What symptoms are you experiencing?</FormLabel>
+                      <FormLabel>{t('symptomsLabel')}</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
-                          placeholder="Please describe your symptoms in detail..."
-                          className="min-h-[120px] resize-none bg-white/50 border-[#264653]/20 focus:border-[#264653]"
+                          placeholder={t('symptomsPlaceholder')}
+                          className="min-h-[120px]"
                         />
                       </FormControl>
                     </FormItem>
@@ -121,14 +124,9 @@ const Symptoms = () => {
                     name="age"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Age</FormLabel>
+                        <FormLabel>{t('age')}</FormLabel>
                         <FormControl>
-                          <Input
-                            {...field}
-                            type="number"
-                            placeholder="Enter your age"
-                            className="w-full"
-                          />
+                          <Input {...field} type="number" placeholder={t('agePlaceholder')} />
                         </FormControl>
                       </FormItem>
                     )}
@@ -139,7 +137,7 @@ const Symptoms = () => {
                     name="gender"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Gender</FormLabel>
+                        <FormLabel>{t('gender')}</FormLabel>
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
@@ -148,11 +146,11 @@ const Symptoms = () => {
                           >
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="male" id="male" />
-                              <label htmlFor="male">Male</label>
+                              <label htmlFor="male">{t('male')}</label>
                             </div>
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="female" id="female" />
-                              <label htmlFor="female">Female</label>
+                              <label htmlFor="female">{t('female')}</label>
                             </div>
                           </RadioGroup>
                         </FormControl>
@@ -166,13 +164,9 @@ const Symptoms = () => {
                   name="duration"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>How long have you had these symptoms?</FormLabel>
+                      <FormLabel>{t('duration')}</FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="e.g., 2 days, 1 week..."
-                          className="w-full"
-                        />
+                        <Input {...field} placeholder={t('durationPlaceholder')} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -183,7 +177,7 @@ const Symptoms = () => {
                   name="severity"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>How severe are your symptoms?</FormLabel>
+                      <FormLabel>{t('severity')}</FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
@@ -192,15 +186,15 @@ const Symptoms = () => {
                         >
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="mild" id="mild" />
-                            <label htmlFor="mild">Mild - Noticeable but not interfering with daily activities</label>
+                            <label htmlFor="mild">{t('mild')}</label>
                           </div>
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="moderate" id="moderate" />
-                            <label htmlFor="moderate">Moderate - Affecting some daily activities</label>
+                            <label htmlFor="moderate">{t('moderate')}</label>
                           </div>
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="severe" id="severe" />
-                            <label htmlFor="severe">Severe - Significantly impacting daily life</label>
+                            <label htmlFor="severe">{t('severe')}</label>
                           </div>
                         </RadioGroup>
                       </FormControl>
@@ -213,12 +207,12 @@ const Symptoms = () => {
                   name="medicalHistory"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Relevant Medical History</FormLabel>
+                      <FormLabel>{t('medicalHistory')}</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
-                          placeholder="Please mention any relevant medical conditions, medications, or allergies..."
-                          className="min-h-[100px] resize-none"
+                          placeholder={t('medicalHistoryPlaceholder')}
+                          className="min-h-[100px]"
                         />
                       </FormControl>
                     </FormItem>
@@ -227,29 +221,28 @@ const Symptoms = () => {
 
                 <Button 
                   type="submit" 
-                  disabled={isLoading} 
-                  className="w-full bg-[#264653] hover:bg-[#264653]/90 text-white"
+                  disabled={isLoading}
+                  className="w-full"
                 >
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Analyzing Symptoms...
+                      {t('analyzing')}
                     </>
                   ) : (
-                    "Check Symptoms"
+                    t('checkSymptoms')
                   )}
                 </Button>
               </form>
             </Form>
 
             {result && (
-              <div className="mt-8 p-6 bg-white/50 backdrop-blur-sm rounded-lg border border-[#264653]/20">
-                <h3 className="text-lg font-semibold text-[#264653] mb-3">Assessment Result:</h3>
-                <p className="text-[#264653]/80 leading-relaxed">{result}</p>
-                <div className="mt-4 pt-4 border-t border-[#264653]/10">
-                  <p className="text-sm text-[#264653]/60">
-                    This is an AI-generated assessment and should not be considered as medical advice. 
-                    Please consult with a healthcare professional for proper diagnosis and treatment.
+              <div className="mt-8 p-6 bg-white/50 backdrop-blur-sm rounded-lg border border-primary/20">
+                <h3 className="text-lg font-semibold mb-3">{t('assessmentResult')}</h3>
+                <p className="whitespace-pre-wrap">{result}</p>
+                <div className="mt-4 pt-4 border-t border-primary/10">
+                  <p className="text-sm text-primary/60">
+                    {t('aiDisclaimer')}
                   </p>
                 </div>
               </div>

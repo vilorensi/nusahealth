@@ -1,92 +1,70 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type Language = 'en' | 'id';
-
-type Translations = {
-  [key in Language]: {
-    welcome: string;
-    subtitle: string;
-    searchPlaceholder: string;
-    checkSymptoms: string;
-    checkSymptomsDesc: string;
-    findServices: string;
-    findServicesDesc: string;
-    emergency: string;
-    emergencyDesc: string;
-    popularTopics: string;
-    symptomChecker: string;
-    healthQA: string;
-    findDoctor: string;
-    drugChecker: string;
-    allergyChecker: string;
-    mentalHealth: string;
-    womensHealth: string;
-    mensHealth: string;
-    vaccination: string;
-    healthEducation: string;
-    [key: string]: string;
-  };
-};
-
-const translations: Translations = {
-  en: {
-    welcome: "Welcome to NusaHealth",
-    subtitle: "Trusted health information for Indonesian community",
-    searchPlaceholder: "Search health information...",
-    checkSymptoms: "Check Symptoms",
-    checkSymptomsDesc: "Recognize your symptoms and get initial medical advice",
-    findServices: "Find Services",
-    findServicesDesc: "Find nearby health facilities in your location",
-    emergency: "Emergency",
-    emergencyDesc: "Need immediate medical help? Contact emergency number",
-    popularTopics: "Popular Health Topics",
-    symptomChecker: "AI Symptom Checker",
-    healthQA: "AI Health Q&A",
-    findDoctor: "Find a Doctor",
-    drugChecker: "Drug Checker",
-    allergyChecker: "Allergy Checker",
-    mentalHealth: "Mental Health",
-    womensHealth: "Women's Health",
-    mensHealth: "Men's Health",
-    vaccination: "Vaccination",
-    healthEducation: "Health Education",
-  },
-  id: {
-    welcome: "Selamat Datang di NusaHealth",
-    subtitle: "Informasi kesehatan terpercaya untuk masyarakat Indonesia",
-    searchPlaceholder: "Cari informasi kesehatan...",
-    checkSymptoms: "Cek Gejala",
-    checkSymptomsDesc: "Kenali gejala Anda dan dapatkan saran medis awal",
-    findServices: "Temukan Layanan",
-    findServicesDesc: "Cari fasilitas kesehatan terdekat di lokasi Anda",
-    emergency: "Darurat",
-    emergencyDesc: "Butuh bantuan medis segera? Hubungi nomor darurat",
-    popularTopics: "Topik Kesehatan Populer",
-    symptomChecker: "Cek Gejala AI",
-    healthQA: "Tanya Jawab Kesehatan AI",
-    findDoctor: "Cari Dokter",
-    drugChecker: "Cek Obat",
-    allergyChecker: "Cek Alergi",
-    mentalHealth: "Kesehatan Mental",
-    womensHealth: "Kesehatan Wanita",
-    mensHealth: "Kesehatan Pria",
-    vaccination: "Vaksinasi",
-    healthEducation: "Edukasi Kesehatan",
-  },
-};
-
-type LanguageContextType = {
-  language: Language;
-  setLanguage: (lang: Language) => void;
+interface LanguageContextType {
+  language: string;
+  setLanguage: (lang: string) => void;
   t: (key: string) => string;
-};
+}
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('id');
+const translations = {
+  en: {
+    symptomChecker: "AI Symptom Checker",
+    symptomCheckerDesc: "Get an initial assessment of your symptoms using our advanced AI system",
+    important: "Important Notice",
+    emergencyWarning: "If you're experiencing severe or life-threatening symptoms, please seek immediate medical attention or call emergency services.",
+    symptomsLabel: "What symptoms are you experiencing?",
+    symptomsPlaceholder: "Please describe your symptoms in detail...",
+    age: "Age",
+    agePlaceholder: "Enter your age",
+    gender: "Gender",
+    male: "Male",
+    female: "Female",
+    duration: "How long have you had these symptoms?",
+    durationPlaceholder: "e.g., 2 days, 1 week...",
+    severity: "How severe are your symptoms?",
+    mild: "Mild - Noticeable but not interfering with daily activities",
+    moderate: "Moderate - Affecting some daily activities",
+    severe: "Severe - Significantly impacting daily life",
+    medicalHistory: "Relevant Medical History",
+    medicalHistoryPlaceholder: "Please mention any relevant medical conditions, medications, or allergies...",
+    analyzing: "Analyzing Symptoms...",
+    checkSymptoms: "Check Symptoms",
+    assessmentResult: "Assessment Result",
+    aiDisclaimer: "This is an AI-generated assessment and should not be considered as medical advice. Please consult with a healthcare professional for proper diagnosis and treatment.",
+  },
+  id: {
+    symptomChecker: "Pemeriksa Gejala AI",
+    symptomCheckerDesc: "Dapatkan penilaian awal gejala Anda menggunakan sistem AI canggih kami",
+    important: "Pemberitahuan Penting",
+    emergencyWarning: "Jika Anda mengalami gejala yang parah atau mengancam jiwa, segera cari bantuan medis atau hubungi layanan darurat.",
+    symptomsLabel: "Gejala apa yang Anda alami?",
+    symptomsPlaceholder: "Mohon jelaskan gejala Anda secara detail...",
+    age: "Usia",
+    agePlaceholder: "Masukkan usia Anda",
+    gender: "Jenis Kelamin",
+    male: "Laki-laki",
+    female: "Perempuan",
+    duration: "Sudah berapa lama Anda mengalami gejala ini?",
+    durationPlaceholder: "contoh: 2 hari, 1 minggu...",
+    severity: "Seberapa parah gejala Anda?",
+    mild: "Ringan - Terasa tapi tidak mengganggu aktivitas sehari-hari",
+    moderate: "Sedang - Mempengaruhi beberapa aktivitas sehari-hari",
+    severe: "Parah - Sangat mempengaruhi kehidupan sehari-hari",
+    medicalHistory: "Riwayat Medis yang Relevan",
+    medicalHistoryPlaceholder: "Mohon sebutkan kondisi medis, obat-obatan, atau alergi yang relevan...",
+    analyzing: "Menganalisis Gejala...",
+    checkSymptoms: "Periksa Gejala",
+    assessmentResult: "Hasil Penilaian",
+    aiDisclaimer: "Ini adalah penilaian yang dihasilkan AI dan tidak boleh dianggap sebagai saran medis. Silakan berkonsultasi dengan profesional kesehatan untuk diagnosis dan pengobatan yang tepat.",
+  }
+};
 
-  const t = (key: string): string => {
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  const [language, setLanguage] = useState('en');
+
+  const t = (key: string) => {
     return translations[language][key] || key;
   };
 
@@ -99,7 +77,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
