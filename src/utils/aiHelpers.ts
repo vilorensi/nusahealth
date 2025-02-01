@@ -7,7 +7,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('value')
-      .eq('name', 'OPENAI_API_KEY')
+      .eq('name', 'openai_api_key')
       .maybeSingle();
 
     if (secretError) {

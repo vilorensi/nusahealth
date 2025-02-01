@@ -11,17 +11,14 @@ export type Database = {
     Tables: {
       secrets: {
         Row: {
-          id: number
           name: string
           value: string | null
         }
         Insert: {
-          id?: number
           name?: string
           value?: string | null
         }
         Update: {
-          id?: number
           name?: string
           value?: string | null
         }
