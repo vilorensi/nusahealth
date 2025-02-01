@@ -11,16 +11,19 @@ export type Database = {
     Tables: {
       secrets: {
         Row: {
+          created_at: string
           name: string
-          value: string | null
+          value: string
         }
         Insert: {
+          created_at?: string
           name?: string
-          value?: string | null
+          value?: string
         }
         Update: {
+          created_at?: string
           name?: string
-          value?: string | null
+          value?: string
         }
         Relationships: []
       }
