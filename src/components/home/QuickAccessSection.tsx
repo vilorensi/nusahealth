@@ -22,6 +22,7 @@ const QuickAccessSection = () => {
             title={t('checkSymptoms')}
             description={t('checkSymptomsDesc')}
             iconColor="primary"
+            delay={0}
           />
           <QuickAccessCard
             to="/find-doctor"
@@ -29,12 +30,14 @@ const QuickAccessSection = () => {
             title={t('findServices')}
             description={t('findServicesDesc')}
             iconColor="secondary"
+            delay={200}
           />
           <QuickAccessCard
             icon={Phone}
             title={t('emergency')}
             description={t('emergencyDesc')}
             iconColor="accent"
+            delay={400}
             action={
               <a
                 href="tel:119"

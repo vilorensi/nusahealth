@@ -8,14 +8,23 @@ interface QuickAccessCardProps {
   description: string;
   iconColor?: string;
   action?: React.ReactNode;
+  delay?: number;
 }
 
-const QuickAccessCard = ({ to, icon: Icon, title, description, iconColor = "primary", action }: QuickAccessCardProps) => {
+const QuickAccessCard = ({ 
+  to, 
+  icon: Icon, 
+  title, 
+  description, 
+  iconColor = "primary", 
+  action,
+  delay = 0 
+}: QuickAccessCardProps) => {
   const CardWrapper = ({ children }: { children: React.ReactNode }) => {
     if (to) {
       return (
         <Link to={to} className="block">
-          <div className="group relative bg-white/40 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-white/60 border border-white/50 overflow-hidden">
+          <div className="group relative bg-white/40 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-white/60 border border-white/50 overflow-hidden animate-slide-in" style={{ animationDelay: `${delay}ms` }}>
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             {children}
           </div>
@@ -23,7 +32,7 @@ const QuickAccessCard = ({ to, icon: Icon, title, description, iconColor = "prim
       );
     }
     return (
-      <div className="group relative bg-white/40 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-white/60 border border-white/50 overflow-hidden">
+      <div className="group relative bg-white/40 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-white/60 border border-white/50 overflow-hidden animate-slide-in" style={{ animationDelay: `${delay}ms` }}>
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         {children}
       </div>
