@@ -10,60 +10,60 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-bold text-lg mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <h3 className="font-bold text-lg mb-4 text-gray-800">
               {t('aboutNusaHealth')}
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-700">
               {t('aboutDesc')}
             </p>
           </div>
           <div>
-            <h3 className="font-bold text-lg mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <h3 className="font-bold text-lg mb-4 text-gray-800">
               {t('quickLinks')}
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/symptoms" className="text-gray-600 hover:text-primary transition-colors duration-300">
+                <Link to="/symptoms" className="text-gray-700 hover:text-primary transition-colors duration-300">
                   {t('symptomChecker')}
                 </Link>
               </li>
               <li>
-                <Link to="/find-doctor" className="text-gray-600 hover:text-primary transition-colors duration-300">
+                <Link to="/find-doctor" className="text-gray-700 hover:text-primary transition-colors duration-300">
                   {t('findDoctor')}
                 </Link>
               </li>
               <li>
-                <Link to="/health-qa" className="text-gray-600 hover:text-primary transition-colors duration-300">
+                <Link to="/health-qa" className="text-gray-700 hover:text-primary transition-colors duration-300">
                   {t('healthQA')}
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="font-bold text-lg mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <h3 className="font-bold text-lg mb-4 text-gray-800">
               {t('contactUs')}
             </h3>
             <ul className="space-y-2">
-              <li className="flex items-center gap-2 text-gray-600">
+              <li className="flex items-center gap-2 text-gray-700">
                 <Mail size={16} />
                 <span>info@nusahealth.id</span>
               </li>
-              <li className="flex items-center gap-2 text-gray-600">
+              <li className="flex items-center gap-2 text-gray-700">
                 <MapPin size={16} />
                 <span>Jakarta, Indonesia</span>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="font-bold text-lg mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <h3 className="font-bold text-lg mb-4 text-gray-800">
               {t('disclaimer')}
             </h3>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-700 text-sm">
               {t('disclaimerText')}
             </p>
           </div>
         </div>
-        <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-500">
+        <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-700">
           <p>&copy; {new Date().getFullYear()} NusaHealth Indonesia. {t('allRightsReserved')}.</p>
         </div>
       </div>

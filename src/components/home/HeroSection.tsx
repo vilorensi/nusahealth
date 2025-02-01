@@ -83,12 +83,12 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center space-y-8">
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight animate-slide-in">
-            <span className="inline-block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient-x drop-shadow-lg">
+            <span className="inline-block text-gray-800 drop-shadow-lg">
               {t('welcome')}
             </span>
           </h1>
           
-          <p className="max-w-2xl mx-auto text-xl sm:text-2xl text-gray-600 leading-relaxed animate-slide-in font-medium drop-shadow-sm" style={{ animationDelay: '0.2s' }}>
+          <p className="max-w-2xl mx-auto text-xl sm:text-2xl text-gray-700 leading-relaxed animate-slide-in font-medium drop-shadow-sm" style={{ animationDelay: '0.2s' }}>
             {t('subtitle')}
           </p>
 

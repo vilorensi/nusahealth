@@ -23,7 +23,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-xl font-bold">
+              <span className="text-gray-800 text-xl font-bold">
                 nusahealth
               </span>
             </Link>
@@ -35,7 +35,7 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className="flex items-center text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-300"
+                className="flex items-center text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-300"
               >
                 <item.icon className="w-4 h-4 mr-2" />
                 {item.label}
@@ -43,7 +43,7 @@ const Navbar = () => {
             ))}
             <a
               href="tel:119"
-              className="flex items-center text-accent hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-300"
+              className="flex items-center text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-300"
             >
               <Phone size={16} className="mr-1" />
               119
@@ -54,7 +54,7 @@ const Navbar = () => {
           <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-secondary hover:text-primary transition-colors duration-300"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary transition-colors duration-300"
               aria-expanded={isOpen}
               aria-label="Toggle navigation menu"
             >
@@ -72,7 +72,7 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-primary transition-colors duration-300"
+                className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary transition-colors duration-300"
                 onClick={() => setIsOpen(false)}
               >
                 <item.icon className="w-4 h-4 mr-2" />
@@ -81,7 +81,7 @@ const Navbar = () => {
             ))}
             <a
               href="tel:119"
-              className="flex items-center px-3 py-2 rounded-md text-base font-medium text-accent hover:text-primary transition-colors duration-300"
+              className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary transition-colors duration-300"
             >
               <Phone size={16} className="mr-1" />
               119
