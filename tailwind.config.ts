@@ -25,15 +25,15 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#FFDEE2", // Soft pink
+          DEFAULT: "#F2FCE2", // Soft pastel green
           foreground: "#000000",
         },
         secondary: {
-          DEFAULT: "#D6BCFA", // Light purple
+          DEFAULT: "#E2F5E9", // Lighter pastel green
           foreground: "#000000",
         },
         accent: {
-          DEFAULT: "#FDE1D3", // Soft peach
+          DEFAULT: "#D4F2EA", // Mint green
           foreground: "#000000",
         },
         destructive: {
@@ -41,7 +41,7 @@ export default {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#FEF7CD", // Soft yellow
+          DEFAULT: "#E8F7E8", // Very soft green
           foreground: "#000000",
         },
         card: {
@@ -57,7 +57,7 @@ export default {
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
+          '50%': { transform: 'translateY(-10px)' }, // Reduced floating height
         },
         wave: {
           '0%': { transform: 'rotate(0.0deg)' },
