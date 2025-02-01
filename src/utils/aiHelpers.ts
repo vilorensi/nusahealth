@@ -2,13 +2,13 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const getAIResponse = async (prompt: string, systemPrompt: string) => {
   try {
+    // Fetch API key from Supabase
     console.log('Fetching OpenAI API key from Supabase...');
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('value')
-      .eq('name', 'OPENAI_API_KEY')
-      .limit(1)
-      .single();
+      .eq('name', 'nusa')
+      .maybeSingle();
 
     if (secretError) {
       console.error('Error fetching API key:', secretError);
@@ -16,7 +16,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     }
 
     if (!secretData?.value) {
-      console.error('No API key found in secrets');
+      console.error('No API key found');
       throw new Error('No API key found in Supabase secrets');
     }
 
@@ -39,7 +39,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
             content: prompt
           }
         ],
-        temperature: 0.7,
+        temperature: 0.2,
         max_tokens: 1000,
       }),
     });
