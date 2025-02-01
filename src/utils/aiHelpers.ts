@@ -7,10 +7,10 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
       .from('secrets')
       .select('value')
       .eq('name', 'OPENAI_API_KEY')
-      .maybeSingle();
+      .single();
 
     if (secretError) {
-      console.error('Error fetching OpenAI API key:', secretError);
+      console.error('Error fetching API key:', secretError);
       throw new Error('Failed to get API key: ' + secretError.message);
     }
 
@@ -27,7 +27,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-4",
+        model: "gpt-4o-mini",
         messages: [
           {
             role: 'system',
