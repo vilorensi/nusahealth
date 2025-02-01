@@ -42,7 +42,7 @@ const Symptoms = () => {
     if (!apiKey) {
       toast({
         title: "Error",
-        description: "Please enter your Perplexity API key",
+        description: "Please enter your OpenAI API key",
         variant: "destructive",
       });
       return;
@@ -59,14 +59,14 @@ const Symptoms = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'llama-3.1-sonar-small-128k-online',
+          model: "gpt-4o",
           messages: [
             {
               role: 'system',
@@ -135,12 +135,12 @@ const Symptoms = () => {
             </Alert>
 
             <div className="mb-6">
-              <FormLabel>Perplexity API Key</FormLabel>
+              <FormLabel>OpenAI API Key</FormLabel>
               <Input
                 type="password"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                placeholder="Enter your Perplexity API key"
+                placeholder="Enter your OpenAI API key"
                 className="mt-1"
               />
             </div>
