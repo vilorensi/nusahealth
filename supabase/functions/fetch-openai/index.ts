@@ -43,6 +43,8 @@ serve(async (req) => {
       );
     }
 
+    console.log('Making request to OpenAI with message:', message);
+    
     const openAiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {

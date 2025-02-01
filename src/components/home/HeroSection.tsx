@@ -27,11 +27,23 @@ const HeroSection = () => {
     try {
       const systemPrompt = 'You are a medical AI assistant performing initial symptom assessment. Provide a brief initial assessment and recommend whether the patient should seek immediate medical attention. Keep the response concise.';
       
+      console.log('Calling fetch-openai function with symptoms:', symptoms);
+      
       const { data, error } = await supabase.functions.invoke('fetch-openai', {
         body: { message: symptoms, systemPrompt }
       });
 
-      if (error) throw error;
+      console.log('Response from fetch-openai:', { data, error });
+
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+      
+      if (!data?.choices?.[0]?.message?.content) {
+        console.error('Invalid response format:', data);
+        throw new Error('Invalid response from AI');
+      }
       
       const response = data.choices[0].message.content;
       navigate(`/symptoms?query=${encodeURIComponent(symptoms)}&initial=${encodeURIComponent(response)}`);
@@ -39,7 +51,9 @@ const HeroSection = () => {
       console.error('Error analyzing symptoms:', error);
       toast({
         title: "Error",
-        description: language === 'en' ? "Failed to analyze symptoms. Please try again." : "Gagal menganalisis gejala. Silakan coba lagi.",
+        description: language === 'en' 
+          ? "Failed to analyze symptoms. Please try again later." 
+          : "Gagal menganalisis gejala. Silakan coba lagi nanti.",
         variant: "destructive",
       });
     } finally {
