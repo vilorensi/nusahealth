@@ -4,7 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Search } from "lucide-react";
+import { Search, MapPin } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Doctor {
   name: string;
@@ -15,6 +16,7 @@ interface Doctor {
 
 const FindDoctor = () => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(false);
@@ -22,16 +24,20 @@ const FindDoctor = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Load Google Places API
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY&libraries=places`;
-    script.async = true;
-    script.onload = initAutocomplete;
-    document.head.appendChild(script);
+    const loadGoogleMapsScript = () => {
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_API_KEY'}&libraries=places&language=id`;
+      script.async = true;
+      script.defer = true;
+      script.onload = initAutocomplete;
+      document.head.appendChild(script);
 
-    return () => {
-      document.head.removeChild(script);
+      return () => {
+        document.head.removeChild(script);
+      };
     };
+
+    loadGoogleMapsScript();
   }, []);
 
   const initAutocomplete = () => {
@@ -49,7 +55,14 @@ const FindDoctor = () => {
     if (!autocompleteRef.current) return;
 
     const place = autocompleteRef.current.getPlace();
-    if (!place.geometry) return;
+    if (!place.geometry) {
+      toast({
+        title: "Error",
+        description: "Please select a location from the dropdown",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setLoading(true);
 
@@ -77,6 +90,17 @@ const FindDoctor = () => {
           placeId: result.place_id || "",
         }));
         setDoctors(nearbyDoctors);
+        
+        toast({
+          title: "Success",
+          description: `Found ${nearbyDoctors.length} doctors near your location`,
+        });
+      } else {
+        toast({
+          title: "No Results",
+          description: "No doctors found in your area",
+          variant: "destructive",
+        });
       }
     });
   };
@@ -98,14 +122,14 @@ const FindDoctor = () => {
   };
 
   return (
-    <div className="min-h-screen bg-muted">
+    <div className="min-h-screen bg-background">
       <Navbar />
       <main className="container mx-auto px-4 py-8">
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>{t("findDoctor")}</CardTitle>
+            <CardTitle>{t("findDoctor") || "Find a Doctor"}</CardTitle>
             <CardDescription>
-              {t("findDoctorDesc") || "Locate healthcare providers near you based on specialty and location."}
+              {t("findDoctorDesc") || "Search for healthcare providers near you"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -113,31 +137,32 @@ const FindDoctor = () => {
               <Input
                 ref={inputRef}
                 type="text"
-                placeholder="Enter your location..."
+                placeholder={t("enterLocation") || "Enter your location..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1"
               />
-              <Button onClick={handlePlaceSelect}>
+              <Button onClick={handlePlaceSelect} disabled={loading}>
                 <Search className="mr-2 h-4 w-4" />
-                Search
+                {loading ? "Searching..." : "Search"}
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        {loading && <div className="text-center py-8">Searching for nearby doctors...</div>}
-
         {doctors.length > 0 && (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {doctors.map((doctor) => (
-              <Card key={doctor.placeId}>
+              <Card key={doctor.placeId} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="text-lg">{doctor.name}</CardTitle>
-                  <CardDescription>
-                    {doctor.address}
-                    <br />
-                    Distance: {doctor.distance}
+                  <CardDescription className="flex items-start gap-2">
+                    <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
+                    <span>
+                      {doctor.address}
+                      <br />
+                      Distance: {doctor.distance}
+                    </span>
                   </CardDescription>
                 </CardHeader>
               </Card>
