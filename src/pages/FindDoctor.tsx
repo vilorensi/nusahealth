@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import Navbar from "@/components/Navbar";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { Search, MapPin } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import Navbar from "@/components/Navbar";
+import "../styles/FindDoctor.css";
 
 // Simple interface for doctor data
 interface Doctor {
@@ -18,24 +15,21 @@ interface Doctor {
 function FindDoctor() {
   // State management
   const [searchQuery, setSearchQuery] = useState("");
-  const [doctors, setDoctors] = useState([]);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(false);
   
-  // Refs and hooks
-  const searchInputRef = useRef(null);
-  const autocompleteRef = useRef(null);
-  const { t } = useLanguage();
+  // Refs for Google Maps
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const { toast } = useToast();
 
   // Load Google Maps script
   useEffect(() => {
-    // Create and add script to document
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_API_KEY'}&libraries=places&language=id`;
     script.async = true;
     script.defer = true;
     
-    // Initialize autocomplete when script loads
     script.onload = () => {
       if (!searchInputRef.current) return;
       
@@ -44,13 +38,10 @@ function FindDoctor() {
         componentRestrictions: { country: "id" },
       });
 
-      // Listen for place selection
       autocompleteRef.current.addListener("place_changed", handlePlaceSelect);
     };
 
     document.head.appendChild(script);
-
-    // Cleanup
     return () => {
       document.head.removeChild(script);
     };
@@ -62,7 +53,6 @@ function FindDoctor() {
 
     const place = autocompleteRef.current.getPlace();
     
-    // Validate place selection
     if (!place.geometry) {
       toast({
         title: "Error",
@@ -73,37 +63,37 @@ function FindDoctor() {
     }
 
     setLoading(true);
+    searchNearbyDoctors(place);
+  };
 
-    // Search for nearby doctors
+  // Search for nearby doctors
+  const searchNearbyDoctors = (place: google.maps.places.PlaceResult) => {
     const service = new google.maps.places.PlacesService(document.createElement("div"));
     
     const searchRequest = {
-      location: place.geometry.location,
-      radius: 5000, // 5km radius
+      location: place.geometry!.location,
+      radius: 5000,
       type: "doctor",
       keyword: "dokter",
     };
 
-    // Perform the search
     service.nearbySearch(searchRequest, (results, status) => {
       setLoading(false);
 
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-        // Format doctor results
         const nearbyDoctors = results.map((result) => ({
           name: result.name || "Unknown",
           address: result.vicinity || "No address available",
           distance: calculateDistance(
-            place.geometry.location.lat(),
-            place.geometry.location.lng(),
-            result.geometry.location.lat(),
-            result.geometry.location.lng()
+            place.geometry!.location!.lat(),
+            place.geometry!.location!.lng(),
+            result.geometry!.location!.lat(),
+            result.geometry!.location!.lng()
           ),
           placeId: result.place_id || "",
         }));
 
         setDoctors(nearbyDoctors);
-        
         toast({
           title: "Success",
           description: `Found ${nearbyDoctors.length} doctors near your location`,
@@ -119,8 +109,8 @@ function FindDoctor() {
   };
 
   // Calculate distance between two points
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Earth's radius in km
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): string => {
+    const R = 6371;
     const dLat = deg2rad(lat2 - lat1);
     const dLon = deg2rad(lon2 - lon1);
     
@@ -135,61 +125,49 @@ function FindDoctor() {
     return `${distance.toFixed(1)} km`;
   };
 
-  const deg2rad = (deg) => {
+  const deg2rad = (deg: number): number => {
     return deg * (Math.PI / 180);
   };
 
-  // JSX - Main component render
   return (
-    <div className="min-h-screen bg-background">
-      {/* Navigation */}
+    <div className="find-doctor">
       <Navbar />
-      
-      {/* Main content */}
-      <main className="container mx-auto px-4 py-8">
-        {/* Search Card */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>{t("findDoctor")}</CardTitle>
-            <CardDescription>{t("findDoctorDesc")}</CardDescription>
-          </CardHeader>
-          
-          {/* Search Input */}
-          <div className="p-6">
-            <div className="flex gap-4">
-              <Input
-                ref={searchInputRef}
-                type="text"
-                placeholder={t("enterLocation")}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1"
-              />
-              <Button onClick={handlePlaceSelect} disabled={loading}>
-                <Search className="mr-2 h-4 w-4" />
-                {loading ? "Searching..." : "Search"}
-              </Button>
-            </div>
+      <main className="container">
+        <div className="search-card">
+          <h1>Find a Doctor</h1>
+          <div className="search-input">
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="Enter your location"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button 
+              className="search-button"
+              onClick={handlePlaceSelect}
+              disabled={loading}
+            >
+              <Search className="w-4 h-4" />
+              {loading ? "Searching..." : "Search"}
+            </button>
           </div>
-        </Card>
+        </div>
 
-        {/* Doctor Results */}
         {doctors.length > 0 && (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="doctor-grid">
             {doctors.map((doctor) => (
-              <Card key={doctor.placeId} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-lg">{doctor.name}</CardTitle>
-                  <CardDescription className="flex items-start gap-2">
-                    <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
-                    <span>
-                      {doctor.address}
-                      <br />
-                      Distance: {doctor.distance}
-                    </span>
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+              <div key={doctor.placeId} className="doctor-card">
+                <h2 className="doctor-name">{doctor.name}</h2>
+                <div className="doctor-address">
+                  <MapPin className="w-4 h-4" />
+                  <span>
+                    {doctor.address}
+                    <br />
+                    <span className="doctor-distance">Distance: {doctor.distance}</span>
+                  </span>
+                </div>
+              </div>
             ))}
           </div>
         )}
