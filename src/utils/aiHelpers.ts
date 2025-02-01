@@ -1,5 +1,17 @@
 import { supabase } from "@/integrations/supabase/client";
 
+async function checkApiKey() {
+  const { data, error } = await supabase
+    .from("secrets")
+    .select("*")
+    .eq("name", "openai_api_key");
+
+  console.log("Supabase API Key Data:", data, error);
+}
+
+// Run the check immediately
+checkApiKey();
+
 export const getAIResponse = async (prompt: string, systemPrompt: string) => {
   try {
     // Debug Supabase connection
@@ -27,12 +39,6 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
 
     const openAIApiKey = secretData.value;
     console.log('API Key retrieved successfully');
-
-    // Validate API key format
-    if (!openAIApiKey.startsWith('sk-')) {
-      console.error('Invalid API key format');
-      throw new Error('Invalid OpenAI API key format');
-    }
 
     console.log('Making request to OpenAI API...');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
