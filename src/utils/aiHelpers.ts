@@ -14,7 +14,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
       throw new Error('Failed to get API key: ' + secretError.message);
     }
 
-    if (!secretData) {
+    if (!secretData?.value) {
       console.error('No API key found in secrets');
       throw new Error('No API key found in Supabase secrets');
     }
@@ -27,7 +27,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-4",
+        model: "gpt-4o-mini",
         messages: [
           {
             role: 'system',
@@ -52,7 +52,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     const data = await response.json();
     console.log('OpenAI API Response:', data);
     
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+    if (!data.choices?.[0]?.message?.content) {
       console.error('Unexpected API response format:', data);
       throw new Error('Unexpected API response format');
     }
