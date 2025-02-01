@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "@/components/Navbar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Search, MapPin } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
+// Simple interface for doctor data
 interface Doctor {
   name: string;
   address: string;
@@ -14,47 +15,54 @@ interface Doctor {
   placeId: string;
 }
 
-const FindDoctor = () => {
+function FindDoctor() {
+  // State management
+  const [searchQuery, setSearchQuery] = useState("");
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  // Refs and hooks
+  const searchInputRef = useRef(null);
+  const autocompleteRef = useRef(null);
   const { t } = useLanguage();
   const { toast } = useToast();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [loading, setLoading] = useState(false);
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
+  // Load Google Maps script
   useEffect(() => {
-    const loadGoogleMapsScript = () => {
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_API_KEY'}&libraries=places&language=id`;
-      script.async = true;
-      script.defer = true;
-      script.onload = initAutocomplete;
-      document.head.appendChild(script);
+    // Create and add script to document
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_API_KEY'}&libraries=places&language=id`;
+    script.async = true;
+    script.defer = true;
+    
+    // Initialize autocomplete when script loads
+    script.onload = () => {
+      if (!searchInputRef.current) return;
+      
+      autocompleteRef.current = new google.maps.places.Autocomplete(searchInputRef.current, {
+        types: ["geocode"],
+        componentRestrictions: { country: "id" },
+      });
 
-      return () => {
-        document.head.removeChild(script);
-      };
+      // Listen for place selection
+      autocompleteRef.current.addListener("place_changed", handlePlaceSelect);
     };
 
-    loadGoogleMapsScript();
+    document.head.appendChild(script);
+
+    // Cleanup
+    return () => {
+      document.head.removeChild(script);
+    };
   }, []);
 
-  const initAutocomplete = () => {
-    if (!inputRef.current) return;
-
-    autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
-      types: ["geocode"],
-      componentRestrictions: { country: "id" },
-    });
-
-    autocompleteRef.current.addListener("place_changed", handlePlaceSelect);
-  };
-
+  // Handle place selection
   const handlePlaceSelect = () => {
     if (!autocompleteRef.current) return;
 
     const place = autocompleteRef.current.getPlace();
+    
+    // Validate place selection
     if (!place.geometry) {
       toast({
         title: "Error",
@@ -66,28 +74,34 @@ const FindDoctor = () => {
 
     setLoading(true);
 
+    // Search for nearby doctors
     const service = new google.maps.places.PlacesService(document.createElement("div"));
-    const request = {
+    
+    const searchRequest = {
       location: place.geometry.location,
-      radius: 5000,
+      radius: 5000, // 5km radius
       type: "doctor",
       keyword: "dokter",
     };
 
-    service.nearbySearch(request, (results, status) => {
+    // Perform the search
+    service.nearbySearch(searchRequest, (results, status) => {
       setLoading(false);
+
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+        // Format doctor results
         const nearbyDoctors = results.map((result) => ({
           name: result.name || "Unknown",
           address: result.vicinity || "No address available",
           distance: calculateDistance(
-            place.geometry!.location!.lat(),
-            place.geometry!.location!.lng(),
-            result.geometry!.location!.lat(),
-            result.geometry!.location!.lng()
+            place.geometry.location.lat(),
+            place.geometry.location.lng(),
+            result.geometry.location.lat(),
+            result.geometry.location.lng()
           ),
           placeId: result.place_id || "",
         }));
+
         setDoctors(nearbyDoctors);
         
         toast({
@@ -104,39 +118,49 @@ const FindDoctor = () => {
     });
   };
 
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): string => {
-    const R = 6371;
+  // Calculate distance between two points
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Earth's radius in km
     const dLat = deg2rad(lat2 - lat1);
     const dLon = deg2rad(lon2 - lon1);
+    
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
+    
     return `${distance.toFixed(1)} km`;
   };
 
-  const deg2rad = (deg: number): number => {
+  const deg2rad = (deg) => {
     return deg * (Math.PI / 180);
   };
 
+  // JSX - Main component render
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation */}
       <Navbar />
+      
+      {/* Main content */}
       <main className="container mx-auto px-4 py-8">
+        {/* Search Card */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>{t("findDoctor") || "Find a Doctor"}</CardTitle>
-            <CardDescription>
-              {t("findDoctorDesc") || "Search for healthcare providers near you"}
-            </CardDescription>
+            <CardTitle>{t("findDoctor")}</CardTitle>
+            <CardDescription>{t("findDoctorDesc")}</CardDescription>
           </CardHeader>
-          <CardContent>
+          
+          {/* Search Input */}
+          <div className="p-6">
             <div className="flex gap-4">
               <Input
-                ref={inputRef}
+                ref={searchInputRef}
                 type="text"
-                placeholder={t("enterLocation") || "Enter your location..."}
+                placeholder={t("enterLocation")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1"
@@ -146,9 +170,10 @@ const FindDoctor = () => {
                 {loading ? "Searching..." : "Search"}
               </Button>
             </div>
-          </CardContent>
+          </div>
         </Card>
 
+        {/* Doctor Results */}
         {doctors.length > 0 && (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {doctors.map((doctor) => (
@@ -171,6 +196,6 @@ const FindDoctor = () => {
       </main>
     </div>
   );
-};
+}
 
 export default FindDoctor;
