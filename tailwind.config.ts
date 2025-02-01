@@ -25,15 +25,15 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#E5f2d5",
+          DEFAULT: "#FFDEE2", // Soft pink
           foreground: "#000000",
         },
         secondary: {
-          DEFAULT: "#dbe4f4",
+          DEFAULT: "#D6BCFA", // Light purple
           foreground: "#000000",
         },
         accent: {
-          DEFAULT: "#F4A261",
+          DEFAULT: "#FDE1D3", // Soft peach
           foreground: "#000000",
         },
         destructive: {
@@ -41,7 +41,7 @@ export default {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#F8F9FA",
+          DEFAULT: "#FEF7CD", // Soft yellow
           foreground: "#000000",
         },
         card: {
@@ -53,6 +53,26 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        wave: {
+          '0%': { transform: 'rotate(0.0deg)' },
+          '10%': { transform: 'rotate(14deg)' },
+          '20%': { transform: 'rotate(-8deg)' },
+          '30%': { transform: 'rotate(14deg)' },
+          '40%': { transform: 'rotate(-4deg)' },
+          '50%': { transform: 'rotate(10.0deg)' },
+          '60%': { transform: 'rotate(0.0deg)' },
+          '100%': { transform: 'rotate(0.0deg)' },
+        },
+      },
+      animation: {
+        float: 'float 6s ease-in-out infinite',
+        wave: 'wave 2s linear infinite',
       },
     },
   },

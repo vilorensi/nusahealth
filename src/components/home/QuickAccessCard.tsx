@@ -15,16 +15,16 @@ const QuickAccessCard = ({ to, icon: Icon, title, description, iconColor = "prim
     if (to) {
       return (
         <Link to={to} className="block">
-          <div className="group relative bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-white/90 border border-gray-100/50 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="group relative bg-white/40 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-white/60 border border-white/50 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             {children}
           </div>
         </Link>
       );
     }
     return (
-      <div className="group relative bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-white/90 border border-gray-100/50 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="group relative bg-white/40 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-white/60 border border-white/50 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         {children}
       </div>
     );
@@ -34,10 +34,10 @@ const QuickAccessCard = ({ to, icon: Icon, title, description, iconColor = "prim
     <CardWrapper>
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <div className={`p-3 rounded-xl bg-${iconColor}/10 group-hover:bg-${iconColor}/20 transition-colors duration-300`}>
-            <Icon className={`w-6 h-6 text-${iconColor}-600 group-hover:scale-110 transition-transform duration-300`} />
+          <div className={`p-3 rounded-xl bg-${iconColor}/20 group-hover:bg-${iconColor}/30 transition-colors duration-300`}>
+            <Icon className={`w-6 h-6 text-${iconColor}-600 group-hover:scale-110 transition-transform duration-300 animate-float`} />
           </div>
-          <h3 className="text-xl font-semibold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent group-hover:from-purple-600 group-hover:to-blue-600 transition-all duration-300">
+          <h3 className="text-xl font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:from-secondary group-hover:to-primary transition-all duration-300">
             {title}
           </h3>
         </div>
