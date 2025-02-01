@@ -12,10 +12,18 @@ interface Doctor {
   placeId: string;
 }
 
-// Define missing Google Maps types
-interface PlaceResult extends google.maps.places.PlaceResult {
-  geometry?: google.maps.places.PlaceGeometry;
+// Define custom types for Google Maps Places API
+interface CustomPlaceGeometry {
+  location: google.maps.LatLng;
+  viewport?: google.maps.LatLngBounds;
+}
+
+interface CustomPlaceResult {
+  name?: string;
+  formatted_address?: string;
+  geometry?: CustomPlaceGeometry;
   vicinity?: string;
+  place_id?: string;
 }
 
 function FindDoctor() {
@@ -32,7 +40,6 @@ function FindDoctor() {
 
   // Load Google Maps script
   useEffect(() => {
-    // Create API key input if not set
     if (!apiKey) {
       return;
     }
@@ -63,7 +70,7 @@ function FindDoctor() {
   const handlePlaceSelect = () => {
     if (!autocompleteRef.current) return;
 
-    const place = autocompleteRef.current.getPlace() as PlaceResult;
+    const place = autocompleteRef.current.getPlace() as CustomPlaceResult;
     
     if (!place.geometry) {
       toast({
@@ -79,7 +86,7 @@ function FindDoctor() {
   };
 
   // Search for nearby doctors
-  const searchNearbyDoctors = (place: PlaceResult) => {
+  const searchNearbyDoctors = (place: CustomPlaceResult) => {
     if (!place.geometry?.location) return;
 
     const service = new google.maps.places.PlacesService(document.createElement("div"));
@@ -95,7 +102,7 @@ function FindDoctor() {
       setLoading(false);
 
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-        const nearbyDoctors = results.map((result) => ({
+        const nearbyDoctors = results.map((result: CustomPlaceResult) => ({
           name: result.name || "Unknown",
           address: result.vicinity || "No address available",
           distance: calculateDistance(
