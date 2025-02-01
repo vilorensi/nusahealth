@@ -46,6 +46,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     const data = await response.json();
     return data.choices[0].message.content;
   } catch (error) {
-    throw new Error('Failed to get AI response');
+    console.error('AI Response Error:', error);
+    throw error;
   }
 };
