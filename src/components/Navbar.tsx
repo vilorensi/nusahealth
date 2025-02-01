@@ -8,13 +8,13 @@ const Navbar = () => {
   const { t } = useLanguage();
 
   const navItems = [
-    { path: "/symptoms", label: t("symptomChecker"), icon: Stethoscope },
-    { path: "/health-qa", label: t("healthQA"), icon: MessageSquare },
-    { path: "/find-doctor", label: t("findDoctor"), icon: User },
-    { path: "/drug-checker", label: t("drugChecker"), icon: Pill },
-    { path: "/allergy-checker", label: t("allergyChecker"), icon: AlertCircle },
-    { path: "/mental-health", label: t("mentalHealth"), icon: Heart },
-    { path: "/vaccination-checker", label: t("vaccination"), icon: Syringe },
+    { path: "/symptoms", label: "Symptoms", icon: Stethoscope },
+    { path: "/health-qa", label: "Q&A", icon: MessageSquare },
+    { path: "/find-doctor", label: "Doctor", icon: User },
+    { path: "/drug-checker", label: "Medication", icon: Pill },
+    { path: "/allergy-checker", label: "Allergy", icon: AlertCircle },
+    { path: "/mental-health", label: "Mental", icon: Heart },
+    { path: "/vaccination-checker", label: "Vaccine", icon: Syringe },
     { path: "/blog", label: "Blog", icon: Newspaper },
   ];
 
@@ -34,7 +34,7 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className="flex items-center text-secondary hover:text-primary px-3 py-2 text-sm font-medium"
+                className="flex items-center text-[#333333] hover:text-primary px-3 py-2 text-sm font-medium"
               >
                 <item.icon className="w-4 h-4 mr-2" />
                 {item.label}
