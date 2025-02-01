@@ -17,10 +17,15 @@ export const ResultDisplay = ({ result }: ResultDisplayProps) => {
       <h3 className="text-lg font-semibold mb-3">Assessment Result</h3>
       <p className="whitespace-pre-wrap">{result}</p>
       <div className="mt-4 pt-4 border-t border-primary/10">
-        <p className="text-sm text-primary/60">
-          Disclaimer: This is an AI-generated assessment and should not replace professional medical advice. 
-          Please consult with a healthcare provider for proper diagnosis and treatment.
-        </p>
+        <Alert variant="warning" className="bg-accent/10 border-accent/20">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Important Medical Disclaimer</AlertTitle>
+          <AlertDescription className="text-sm text-primary/60">
+            This is an AI-generated assessment and should not replace professional medical advice. 
+            Please consult with a qualified healthcare provider for proper diagnosis and treatment.
+            In case of emergency, contact emergency services immediately.
+          </AlertDescription>
+        </Alert>
       </div>
     </div>
   );
