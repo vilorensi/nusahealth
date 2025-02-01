@@ -1,109 +1,18 @@
-declare namespace google {
-  namespace maps {
-    class Map {
-      constructor(element: HTMLElement, options: MapOptions);
-    }
-
-    class Marker {
-      constructor(options: MarkerOptions);
-    }
-
-    class Geocoder {
-      constructor();
-      geocode(request: GeocoderRequest, callback: (results: GeocoderResult[], status: GeocoderStatus) => void): void;
-    }
-
-    namespace places {
-      class PlacesService {
-        constructor(attrContainer: HTMLDivElement | Map);
-        nearbySearch(request: PlacesSearchRequest, callback: (results: PlaceResult[], status: PlacesServiceStatus, pagination: PlaceSearchPagination) => void): void;
-      }
-
-      class Autocomplete {
-        constructor(inputField: HTMLInputElement, opts?: AutocompleteOptions);
-        addListener(eventName: string, handler: Function): void;
-        getPlace(): PlaceResult;
-      }
-
-      enum PlacesServiceStatus {
-        OK = 'OK',
-        ZERO_RESULTS = 'ZERO_RESULTS',
-        OVER_QUERY_LIMIT = 'OVER_QUERY_LIMIT',
-        REQUEST_DENIED = 'REQUEST_DENIED',
-        INVALID_REQUEST = 'INVALID_REQUEST'
-      }
-    }
-
-    interface MapOptions {
-      center: LatLng | LatLngLiteral;
-      zoom: number;
-      [key: string]: any;
-    }
-
-    interface MarkerOptions {
-      position: LatLng | LatLngLiteral;
-      map?: Map;
-      title?: string;
-      [key: string]: any;
-    }
-
-    interface LatLng {
-      lat(): number;
-      lng(): number;
-    }
-
-    interface LatLngLiteral {
-      lat: number;
-      lng: number;
-    }
-
+declare namespace google.maps {
+  interface LatLngBounds {
+    extend(latLng: LatLng): LatLngBounds;
+  }
+  
+  namespace places {
     interface PlaceResult {
-      geometry?: {
-        location: LatLng;
-      };
+      geometry?: places.PlaceGeometry;
       name?: string;
-      vicinity?: string;
-      place_id?: string;
+      formatted_address?: string;
     }
-
-    interface PlacesSearchRequest {
-      location: LatLng | LatLngLiteral;
-      radius: number;
-      type?: string;
-      keyword?: string;
-    }
-
-    interface GeocoderRequest {
-      address?: string;
-      location?: LatLng | LatLngLiteral;
-      placeId?: string;
-      [key: string]: any;
-    }
-
-    interface GeocoderResult {
-      geometry: {
-        location: LatLng;
-      };
-    }
-
-    interface PlaceSearchPagination {
-      hasNextPage: boolean;
-      nextPage(): void;
-    }
-
-    interface AutocompleteOptions {
-      types?: string[];
-      componentRestrictions?: {
-        country: string | string[];
-      };
-    }
-
-    enum GeocoderStatus {
-      OK = 'OK',
-      ZERO_RESULTS = 'ZERO_RESULTS',
-      OVER_QUERY_LIMIT = 'OVER_QUERY_LIMIT',
-      REQUEST_DENIED = 'REQUEST_DENIED',
-      INVALID_REQUEST = 'INVALID_REQUEST'
+    
+    interface PlaceGeometry {
+      location?: LatLng;
+      viewport?: LatLngBounds;
     }
   }
 }
