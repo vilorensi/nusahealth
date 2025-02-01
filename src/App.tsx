@@ -12,11 +12,10 @@ import FindDoctor from "./pages/FindDoctor";
 import DrugChecker from "./pages/DrugChecker";
 import AllergyChecker from "./pages/AllergyChecker";
 import MentalHealth from "./pages/MentalHealth";
-import WomensHealth from "./pages/WomensHealth";
-import MensHealth from "./pages/MensHealth";
+import GenderHealth from "./pages/GenderHealth";
 import VaccinationChecker from "./pages/VaccinationChecker";
 import HealthEducation from "./pages/HealthEducation";
-import Services from "./pages/Services";
+import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -35,11 +34,10 @@ const App = () => (
             <Route path="/drug-checker" element={<DrugChecker />} />
             <Route path="/allergy-checker" element={<AllergyChecker />} />
             <Route path="/mental-health" element={<MentalHealth />} />
-            <Route path="/womens-health" element={<WomensHealth />} />
-            <Route path="/mens-health" element={<MensHealth />} />
+            <Route path="/gender-health" element={<GenderHealth />} />
             <Route path="/vaccination-checker" element={<VaccinationChecker />} />
             <Route path="/health-education" element={<HealthEducation />} />
-            <Route path="/services" element={<Services />} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
