@@ -23,7 +23,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="text-gray-700 text-xl font-bold hover:text-[#4B7F52] transition-colors duration-300">
+              <span className="bg-gradient-to-r from-[#4B7F52] to-[#8FBC8F] bg-clip-text text-transparent text-xl font-bold hover:from-[#8FBC8F] hover:to-[#4B7F52] transition-all duration-300">
                 nusahealth
               </span>
             </Link>
