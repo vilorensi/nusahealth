@@ -6,10 +6,16 @@ const QuickAccessSection = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="bg-gradient-to-b from-[#e7f0fd] to-white py-16 sm:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+    <div className="relative bg-gradient-to-b from-[#e0e7ff] to-white py-16 sm:py-24 overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute h-[300px] w-[300px] rounded-full bg-purple-200/30 -left-20 top-0 blur-3xl animate-float" />
+        <div className="absolute h-[250px] w-[250px] rounded-full bg-blue-200/30 right-0 bottom-0 blur-3xl animate-float animation-delay-2000" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12 animate-fade-in">
+          <h2 className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 mb-4">
             {t('ourServices')}
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -40,7 +46,7 @@ const QuickAccessSection = () => {
             action={
               <a
                 href="tel:119"
-                className="inline-flex items-center text-[#9b87f5] hover:text-[#8B5CF6] font-semibold text-lg group"
+                className="inline-flex items-center text-purple-500 hover:text-purple-600 font-semibold text-lg group"
               >
                 <Phone className="w-5 h-5 mr-2 transition-transform group-hover:scale-110" />
                 119
