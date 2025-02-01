@@ -45,7 +45,7 @@ export const getAIResponse = async (userInput: string, systemPrompt: string) => 
         { role: "system", content: systemPrompt },
         { role: "user", content: userInput }
       ],
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o-mini",
     });
 
     return completion.choices[0].message.content;
