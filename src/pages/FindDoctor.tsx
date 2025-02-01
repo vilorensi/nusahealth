@@ -12,11 +12,18 @@ interface Doctor {
   placeId: string;
 }
 
+// Define missing Google Maps types
+interface PlaceResult extends google.maps.places.PlaceResult {
+  geometry?: google.maps.places.PlaceGeometry;
+  vicinity?: string;
+}
+
 function FindDoctor() {
   // State management
   const [searchQuery, setSearchQuery] = useState("");
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(false);
+  const [apiKey, setApiKey] = useState<string>("");
   
   // Refs for Google Maps
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -25,8 +32,13 @@ function FindDoctor() {
 
   // Load Google Maps script
   useEffect(() => {
+    // Create API key input if not set
+    if (!apiKey) {
+      return;
+    }
+
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_API_KEY'}&libraries=places&language=id`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&language=id`;
     script.async = true;
     script.defer = true;
     
@@ -45,13 +57,13 @@ function FindDoctor() {
     return () => {
       document.head.removeChild(script);
     };
-  }, []);
+  }, [apiKey]);
 
   // Handle place selection
   const handlePlaceSelect = () => {
     if (!autocompleteRef.current) return;
 
-    const place = autocompleteRef.current.getPlace();
+    const place = autocompleteRef.current.getPlace() as PlaceResult;
     
     if (!place.geometry) {
       toast({
@@ -67,11 +79,13 @@ function FindDoctor() {
   };
 
   // Search for nearby doctors
-  const searchNearbyDoctors = (place: google.maps.places.PlaceResult) => {
+  const searchNearbyDoctors = (place: PlaceResult) => {
+    if (!place.geometry?.location) return;
+
     const service = new google.maps.places.PlacesService(document.createElement("div"));
     
     const searchRequest = {
-      location: place.geometry!.location,
+      location: place.geometry.location,
       radius: 5000,
       type: "doctor",
       keyword: "dokter",
@@ -133,43 +147,61 @@ function FindDoctor() {
     <div className="find-doctor">
       <Navbar />
       <main className="container">
-        <div className="search-card">
-          <h1>Find a Doctor</h1>
-          <div className="search-input">
+        {!apiKey ? (
+          <div className="api-key-input">
+            <h2>Enter Google Maps API Key</h2>
             <input
-              ref={searchInputRef}
               type="text"
-              placeholder="Enter your location"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Enter your Google Maps API Key"
+              onChange={(e) => setApiKey(e.target.value)}
+              className="w-full p-2 border rounded"
             />
-            <button 
-              className="search-button"
-              onClick={handlePlaceSelect}
-              disabled={loading}
-            >
-              <Search className="w-4 h-4" />
-              {loading ? "Searching..." : "Search"}
-            </button>
+            <p className="text-sm text-gray-500 mt-2">
+              You need to provide a Google Maps API key to use this feature.
+              Get one from the Google Cloud Console.
+            </p>
           </div>
-        </div>
-
-        {doctors.length > 0 && (
-          <div className="doctor-grid">
-            {doctors.map((doctor) => (
-              <div key={doctor.placeId} className="doctor-card">
-                <h2 className="doctor-name">{doctor.name}</h2>
-                <div className="doctor-address">
-                  <MapPin className="w-4 h-4" />
-                  <span>
-                    {doctor.address}
-                    <br />
-                    <span className="doctor-distance">Distance: {doctor.distance}</span>
-                  </span>
-                </div>
+        ) : (
+          <>
+            <div className="search-card">
+              <h1>Find a Doctor</h1>
+              <div className="search-input">
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Enter your location"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button 
+                  className="search-button"
+                  onClick={handlePlaceSelect}
+                  disabled={loading}
+                >
+                  <Search className="w-4 h-4" />
+                  {loading ? "Searching..." : "Search"}
+                </button>
               </div>
-            ))}
-          </div>
+            </div>
+
+            {doctors.length > 0 && (
+              <div className="doctor-grid">
+                {doctors.map((doctor) => (
+                  <div key={doctor.placeId} className="doctor-card">
+                    <h2 className="doctor-name">{doctor.name}</h2>
+                    <div className="doctor-address">
+                      <MapPin className="w-4 h-4" />
+                      <span>
+                        {doctor.address}
+                        <br />
+                        <span className="doctor-distance">Distance: {doctor.distance}</span>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>
