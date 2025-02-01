@@ -17,7 +17,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
 
     if (!secretData?.value) {
       console.error('No API key found');
-      throw new Error('OpenAI API key not found. Please add it to Supabase secrets.');
+      throw new Error('OpenAI API key not found in Supabase secrets.');
     }
 
     console.log('Making request to OpenAI API...');
