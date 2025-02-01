@@ -7,7 +7,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('value')
-      .eq('name', 'nusa')
+      .eq('name', 'OPENAI_API_KEY')
       .maybeSingle();
 
     if (secretError) {
@@ -17,7 +17,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
 
     if (!secretData?.value) {
       console.error('No API key found');
-      throw new Error('No API key found in Supabase secrets');
+      throw new Error('No OpenAI API key found in Supabase secrets');
     }
 
     console.log('Making request to OpenAI API...');
