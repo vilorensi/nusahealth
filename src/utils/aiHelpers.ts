@@ -2,29 +2,33 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const getAIResponse = async (prompt: string, systemPrompt: string) => {
   try {
-    // Fetch API key from Supabase
-    console.log('Fetching OpenAI API key from Supabase...');
+    // Debug Supabase connection
+    console.log('Checking Supabase connection...');
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
-      .select('value')
-      .eq('name', 'openai_api_key')
-      .maybeSingle();
+      .select('*')
+      .eq('name', 'openai_api_key');
+
+    console.log('Supabase query result:', { data: secretData, error: secretError });
 
     if (secretError) {
       console.error('Error fetching API key:', secretError);
       throw new Error('Failed to get API key: ' + secretError.message);
     }
 
-    if (!secretData?.value) {
-      console.error('No API key found');
+    if (!secretData || secretData.length === 0 || !secretData[0]?.value) {
+      console.error('No API key found in secrets table');
       throw new Error('OpenAI API key not found in Supabase secrets.');
     }
+
+    const openAIApiKey = secretData[0].value;
+    console.log('API Key retrieved successfully');
 
     console.log('Making request to OpenAI API...');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${secretData.value}`,
+        'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
