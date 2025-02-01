@@ -15,7 +15,7 @@ const QuickAccessSection = () => {
           description={t('checkSymptomsDesc')}
         />
         <QuickAccessCard
-          to="/services"
+          to="/find-doctor"
           icon={Hospital}
           title={t('findServices')}
           description={t('findServicesDesc')}
