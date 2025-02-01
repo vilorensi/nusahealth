@@ -1,29 +1,30 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  'https://iynarfkdplimjrsvtg.supabase.co',  // Your Supabase project URL
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5eHZrcXBwZWt6YXVyaWxqbmxuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDY4OTQ5ODAsImV4cCI6MjAyMjQ3MDk4MH0.qDPHvM7G3oNs3DsWJ5dHmGbqeVvKqiOd-2_vvUq_NOE'  // Your Supabase anon key
-);
+import { supabase } from "@/integrations/supabase/client";
 
 export const getAIResponse = async (prompt: string, systemPrompt: string) => {
   try {
-    const { data: { OPENAI_API_KEY }, error } = await supabase
+    const { data, error } = await supabase
       .from('secrets')
       .select('OPENAI_API_KEY')
       .single();
 
-    if (error || !OPENAI_API_KEY) {
+    if (error) {
+      console.error('Error fetching API key:', error);
       throw new Error('Failed to get API key');
+    }
+
+    if (!data || !data.OPENAI_API_KEY) {
+      console.error('No API key found');
+      throw new Error('OpenAI API key not found');
     }
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${data.OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-4",
+        model: "gpt-4o-mini",
         messages: [
           {
             role: 'system',
@@ -40,11 +41,13 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get answer');
+      const errorData = await response.json();
+      console.error('OpenAI API Error:', errorData);
+      throw new Error('Failed to get answer from OpenAI');
     }
 
-    const data = await response.json();
-    return data.choices[0].message.content;
+    const data2 = await response.json();
+    return data2.choices[0].message.content;
   } catch (error) {
     console.error('AI Response Error:', error);
     throw error;
