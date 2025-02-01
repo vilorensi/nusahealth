@@ -3,13 +3,16 @@ import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const HealthQA = () => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [apiKey, setApiKey] = useState("");
   const { toast } = useToast();
   const { t } = useLanguage();
 
@@ -24,20 +27,29 @@ const HealthQA = () => {
       return;
     }
 
+    if (!apiKey.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter your OpenAI API key",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY || ''}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'llama-3.1-sonar-small-128k-online',
+          model: "gpt-4",
           messages: [
             {
               role: 'system',
-              content: 'You are a helpful medical AI assistant. Provide accurate, clear, and concise health information. Always include a disclaimer that users should consult healthcare professionals for medical advice.'
+              content: 'You are a medical AI assistant. Provide accurate, clear, and concise health information. Always include a disclaimer that users should consult healthcare professionals for medical advice.'
             },
             {
               role: 'user',
@@ -49,12 +61,16 @@ const HealthQA = () => {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to get answer');
+      }
+
       const data = await response.json();
       setAnswer(data.choices[0].message.content);
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to get an answer. Please try again.",
+        description: "Failed to get an answer. Please check your API key and try again.",
         variant: "destructive",
       });
     } finally {
@@ -75,6 +91,31 @@ const HealthQA = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label htmlFor="apiKey" className="block text-sm font-medium">
+                  OpenAI API Key
+                </label>
+                <Input
+                  id="apiKey"
+                  type="password"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="Enter your OpenAI API key"
+                  className="font-mono"
+                />
+                <p className="text-sm text-muted-foreground">
+                  Required to use the AI features. Get your API key from{" "}
+                  <a
+                    href="https://platform.openai.com/api-keys"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    OpenAI's website
+                  </a>
+                </p>
+              </div>
+
               <div>
                 <Textarea
                   placeholder="Type your health question here..."
@@ -84,7 +125,14 @@ const HealthQA = () => {
                 />
               </div>
               <Button type="submit" disabled={isLoading} className="w-full">
-                {isLoading ? "Getting Answer..." : "Ask Question"}
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Getting Answer...
+                  </>
+                ) : (
+                  "Ask Question"
+                )}
               </Button>
             </form>
 
