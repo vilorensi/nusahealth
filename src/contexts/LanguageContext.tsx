@@ -32,6 +32,23 @@ const translations = {
     checkSymptoms: "Check Symptoms",
     checkSymptomsDesc: "Get an AI-powered assessment of your symptoms",
     popularTopics: "Popular Health Topics",
+    // Footer translations
+    aboutNusaHealth: "About NusaHealth",
+    aboutDesc: "Providing reliable health information and connecting you with healthcare services across Indonesia",
+    quickLinks: "Quick Links",
+    contactUs: "Contact Us",
+    disclaimer: "Disclaimer",
+    disclaimerText: "The information provided on this website is for general informational purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment.",
+    allRightsReserved: "All rights reserved",
+    // Navigation translations
+    symptoms: "Symptoms",
+    qa: "Q&A",
+    doctor: "Doctor",
+    medication: "Medication",
+    allergy: "Allergy",
+    mental: "Mental",
+    vaccine: "Vaccine",
+    blog: "Blog"
   },
   id: {
     symptomChecker: "Pemeriksa Gejala AI",
@@ -56,6 +73,23 @@ const translations = {
     checkSymptoms: "Periksa Gejala",
     checkSymptomsDesc: "Dapatkan penilaian gejala Anda dengan bantuan AI",
     popularTopics: "Topik Kesehatan Populer",
+    // Footer translations
+    aboutNusaHealth: "Tentang NusaHealth",
+    aboutDesc: "Menyediakan informasi kesehatan yang terpercaya dan menghubungkan Anda dengan layanan kesehatan di seluruh Indonesia",
+    quickLinks: "Tautan Cepat",
+    contactUs: "Hubungi Kami",
+    disclaimer: "Peringatan",
+    disclaimerText: "Informasi yang disediakan di situs web ini hanya untuk tujuan informasi umum. Ini tidak dimaksudkan sebagai pengganti saran medis profesional, diagnosis, atau pengobatan.",
+    allRightsReserved: "Hak cipta dilindungi undang-undang",
+    // Navigation translations
+    symptoms: "Gejala",
+    qa: "Tanya Jawab",
+    doctor: "Dokter",
+    medication: "Obat",
+    allergy: "Alergi",
+    mental: "Mental",
+    vaccine: "Vaksin",
+    blog: "Blog"
   }
 };
 

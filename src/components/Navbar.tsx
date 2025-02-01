@@ -8,14 +8,14 @@ const Navbar = () => {
   const { t } = useLanguage();
 
   const navItems = [
-    { path: "/symptoms", label: "Symptoms", icon: Stethoscope },
-    { path: "/health-qa", label: "Q&A", icon: MessageSquare },
-    { path: "/find-doctor", label: "Doctor", icon: User },
-    { path: "/drug-checker", label: "Medication", icon: Pill },
-    { path: "/allergy-checker", label: "Allergy", icon: AlertCircle },
-    { path: "/mental-health", label: "Mental", icon: Heart },
-    { path: "/vaccination-checker", label: "Vaccine", icon: Syringe },
-    { path: "/blog", label: "Blog", icon: Newspaper },
+    { path: "/symptoms", label: t('symptoms'), icon: Stethoscope },
+    { path: "/health-qa", label: t('qa'), icon: MessageSquare },
+    { path: "/find-doctor", label: t('doctor'), icon: User },
+    { path: "/drug-checker", label: t('medication'), icon: Pill },
+    { path: "/allergy-checker", label: t('allergy'), icon: AlertCircle },
+    { path: "/mental-health", label: t('mental'), icon: Heart },
+    { path: "/vaccination-checker", label: t('vaccine'), icon: Syringe },
+    { path: "/blog", label: t('blog'), icon: Newspaper },
   ];
 
   return (
