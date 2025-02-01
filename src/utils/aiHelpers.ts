@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
+  'https://iynarfkdplimjrsvtg.supabase.co',  // Your Supabase project URL
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5eHZrcXBwZWt6YXVyaWxqbmxuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDY4OTQ5ODAsImV4cCI6MjAyMjQ3MDk4MH0.qDPHvM7G3oNs3DsWJ5dHmGbqeVvKqiOd-2_vvUq_NOE'  // Your Supabase anon key
 );
 
 export const getAIResponse = async (prompt: string, systemPrompt: string) => {
