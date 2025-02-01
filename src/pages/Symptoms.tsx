@@ -48,6 +48,15 @@ const Symptoms = () => {
       return;
     }
 
+    if (!data.symptoms.trim()) {
+      toast({
+        title: "Error",
+        description: "Please describe your symptoms",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await fetch('https://api.perplexity.ai/chat/completions', {
@@ -97,6 +106,7 @@ const Symptoms = () => {
         description: "Failed to analyze symptoms. Please check your API key and try again.",
         variant: "destructive",
       });
+      console.error('API Error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -116,9 +126,11 @@ const Symptoms = () => {
           <CardContent>
             <Alert className="mb-6 bg-[#F4A261]/20 border-[#F4A261]">
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>{t('important')}</AlertTitle>
+              <AlertTitle>Important</AlertTitle>
               <AlertDescription>
-                {t('emergencyWarning')}
+                If you are experiencing severe symptoms or believe you have a medical emergency,
+                please contact emergency services immediately or visit the nearest emergency room.
+                This tool is for informational purposes only and should not replace professional medical advice.
               </AlertDescription>
             </Alert>
 
@@ -140,11 +152,11 @@ const Symptoms = () => {
                   name="symptoms"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('symptomsLabel')}</FormLabel>
+                      <FormLabel>Describe your symptoms</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
-                          placeholder={t('symptomsPlaceholder')}
+                          placeholder="Please describe your symptoms in detail..."
                           className="min-h-[120px]"
                         />
                       </FormControl>
@@ -158,9 +170,9 @@ const Symptoms = () => {
                     name="age"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t('age')}</FormLabel>
+                        <FormLabel>Age</FormLabel>
                         <FormControl>
-                          <Input {...field} type="number" placeholder={t('agePlaceholder')} />
+                          <Input {...field} type="number" placeholder="Enter your age" />
                         </FormControl>
                       </FormItem>
                     )}
@@ -171,7 +183,7 @@ const Symptoms = () => {
                     name="gender"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t('gender')}</FormLabel>
+                        <FormLabel>Gender</FormLabel>
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
@@ -180,11 +192,11 @@ const Symptoms = () => {
                           >
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="male" id="male" />
-                              <label htmlFor="male">{t('male')}</label>
+                              <label htmlFor="male">Male</label>
                             </div>
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="female" id="female" />
-                              <label htmlFor="female">{t('female')}</label>
+                              <label htmlFor="female">Female</label>
                             </div>
                           </RadioGroup>
                         </FormControl>
@@ -198,9 +210,9 @@ const Symptoms = () => {
                   name="duration"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('duration')}</FormLabel>
+                      <FormLabel>Duration of Symptoms</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder={t('durationPlaceholder')} />
+                        <Input {...field} placeholder="How long have you had these symptoms?" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -211,7 +223,7 @@ const Symptoms = () => {
                   name="severity"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('severity')}</FormLabel>
+                      <FormLabel>Severity</FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
@@ -220,15 +232,15 @@ const Symptoms = () => {
                         >
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="mild" id="mild" />
-                            <label htmlFor="mild">{t('mild')}</label>
+                            <label htmlFor="mild">Mild</label>
                           </div>
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="moderate" id="moderate" />
-                            <label htmlFor="moderate">{t('moderate')}</label>
+                            <label htmlFor="moderate">Moderate</label>
                           </div>
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="severe" id="severe" />
-                            <label htmlFor="severe">{t('severe')}</label>
+                            <label htmlFor="severe">Severe</label>
                           </div>
                         </RadioGroup>
                       </FormControl>
@@ -241,11 +253,11 @@ const Symptoms = () => {
                   name="medicalHistory"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('medicalHistory')}</FormLabel>
+                      <FormLabel>Medical History</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
-                          placeholder={t('medicalHistoryPlaceholder')}
+                          placeholder="Any relevant medical history, medications, or conditions..."
                           className="min-h-[100px]"
                         />
                       </FormControl>
@@ -261,10 +273,10 @@ const Symptoms = () => {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {t('analyzing')}
+                      Analyzing Symptoms...
                     </>
                   ) : (
-                    t('checkSymptoms')
+                    "Analyze Symptoms"
                   )}
                 </Button>
               </form>
@@ -272,11 +284,12 @@ const Symptoms = () => {
 
             {result && (
               <div className="mt-8 p-6 bg-white/50 backdrop-blur-sm rounded-lg border border-primary/20">
-                <h3 className="text-lg font-semibold mb-3">{t('assessmentResult')}</h3>
+                <h3 className="text-lg font-semibold mb-3">Assessment Result</h3>
                 <p className="whitespace-pre-wrap">{result}</p>
                 <div className="mt-4 pt-4 border-t border-primary/10">
                   <p className="text-sm text-primary/60">
-                    {t('aiDisclaimer')}
+                    Disclaimer: This is an AI-generated assessment and should not replace professional medical advice. 
+                    Please consult with a healthcare provider for proper diagnosis and treatment.
                   </p>
                 </div>
               </div>
