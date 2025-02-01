@@ -16,6 +16,7 @@ import WomensHealth from "./pages/WomensHealth";
 import MensHealth from "./pages/MensHealth";
 import VaccinationChecker from "./pages/VaccinationChecker";
 import HealthEducation from "./pages/HealthEducation";
+import Services from "./pages/Services";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/mens-health" element={<MensHealth />} />
             <Route path="/vaccination-checker" element={<VaccinationChecker />} />
             <Route path="/health-education" element={<HealthEducation />} />
+            <Route path="/services" element={<Services />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
