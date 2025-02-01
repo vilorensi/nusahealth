@@ -66,11 +66,10 @@ const FindDoctor = () => {
 
     setLoading(true);
 
-    // Search for nearby doctors using Places API
     const service = new google.maps.places.PlacesService(document.createElement("div"));
     const request = {
       location: place.geometry.location,
-      radius: 5000, // 5km radius
+      radius: 5000,
       type: "doctor",
       keyword: "dokter",
     };
@@ -106,7 +105,7 @@ const FindDoctor = () => {
   };
 
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): string => {
-    const R = 6371; // Earth's radius in km
+    const R = 6371;
     const dLat = deg2rad(lat2 - lat1);
     const dLon = deg2rad(lon2 - lon1);
     const a =

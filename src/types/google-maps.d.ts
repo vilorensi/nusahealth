@@ -13,15 +13,25 @@ declare namespace google {
       geocode(request: GeocoderRequest, callback: (results: GeocoderResult[], status: GeocoderStatus) => void): void;
     }
 
-    class PlacesService {
-      constructor(attrContainer: HTMLDivElement | Map);
-      nearbySearch(request: PlacesSearchRequest, callback: (results: PlaceResult[], status: PlacesServiceStatus, pagination: PlaceSearchPagination) => void): void;
-    }
+    namespace places {
+      class PlacesService {
+        constructor(attrContainer: HTMLDivElement | Map);
+        nearbySearch(request: PlacesSearchRequest, callback: (results: PlaceResult[], status: PlacesServiceStatus, pagination: PlaceSearchPagination) => void): void;
+      }
 
-    class Autocomplete {
-      constructor(inputField: HTMLInputElement, opts?: AutocompleteOptions);
-      addListener(eventName: string, handler: Function): void;
-      getPlace(): PlaceResult;
+      class Autocomplete {
+        constructor(inputField: HTMLInputElement, opts?: AutocompleteOptions);
+        addListener(eventName: string, handler: Function): void;
+        getPlace(): PlaceResult;
+      }
+
+      enum PlacesServiceStatus {
+        OK = 'OK',
+        ZERO_RESULTS = 'ZERO_RESULTS',
+        OVER_QUERY_LIMIT = 'OVER_QUERY_LIMIT',
+        REQUEST_DENIED = 'REQUEST_DENIED',
+        INVALID_REQUEST = 'INVALID_REQUEST'
+      }
     }
 
     interface MapOptions {
@@ -88,20 +98,12 @@ declare namespace google {
       };
     }
 
-    enum PlacesServiceStatus {
-      OK,
-      ZERO_RESULTS,
-      OVER_QUERY_LIMIT,
-      REQUEST_DENIED,
-      INVALID_REQUEST,
-    }
-
     enum GeocoderStatus {
-      OK,
-      ZERO_RESULTS,
-      OVER_QUERY_LIMIT,
-      REQUEST_DENIED,
-      INVALID_REQUEST,
+      OK = 'OK',
+      ZERO_RESULTS = 'ZERO_RESULTS',
+      OVER_QUERY_LIMIT = 'OVER_QUERY_LIMIT',
+      REQUEST_DENIED = 'REQUEST_DENIED',
+      INVALID_REQUEST = 'INVALID_REQUEST'
     }
   }
 }
