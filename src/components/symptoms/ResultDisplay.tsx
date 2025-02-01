@@ -17,7 +17,7 @@ export const ResultDisplay = ({ result }: ResultDisplayProps) => {
       <h3 className="text-lg font-semibold mb-3">Assessment Result</h3>
       <p className="whitespace-pre-wrap">{result}</p>
       <div className="mt-4 pt-4 border-t border-primary/10">
-        <Alert variant="warning" className="bg-accent/10 border-accent/20">
+        <Alert className="bg-accent/10 border-accent/20">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Important Medical Disclaimer</AlertTitle>
           <AlertDescription className="text-sm text-primary/60">
