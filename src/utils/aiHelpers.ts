@@ -39,7 +39,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
             content: prompt
           }
         ],
-        temperature: 0.2,
+        temperature: 0.7,
         max_tokens: 1000,
       }),
     });
