@@ -1,6 +1,7 @@
 import { Search, Phone, Hospital, Stethoscope, Globe2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { useLanguage } from "../contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 
@@ -110,6 +111,8 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
