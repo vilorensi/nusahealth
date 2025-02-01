@@ -25,10 +25,6 @@ const Footer = () => {
             <h3 className="font-bold text-lg mb-4">Contact Us</h3>
             <ul className="space-y-2">
               <li className="flex items-center gap-2 text-gray-700">
-                <Phone size={16} />
-                <span>Emergency: 119</span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-700">
                 <Mail size={16} />
                 <span>info@nusahealth.id</span>
               </li>
