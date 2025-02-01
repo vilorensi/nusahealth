@@ -2,7 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const getAIResponse = async (prompt: string, systemPrompt: string) => {
   try {
-    // Fetch the OpenAI API key from Supabase secrets table
+    // Fetch the OpenAI API key from Supabase secrets
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('value')
@@ -21,7 +21,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "gpt-4",
         messages: [
           {
             role: 'system',
