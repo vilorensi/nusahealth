@@ -21,7 +21,6 @@ const Footer = () => {
               <li><Link to="/symptoms" className="text-gray-700 hover:text-black">{t('symptomChecker')}</Link></li>
               <li><Link to="/find-doctor" className="text-gray-700 hover:text-black">{t('findDoctor')}</Link></li>
               <li><Link to="/health-qa" className="text-gray-700 hover:text-black">{t('healthQA')}</Link></li>
-              <li><Link to="/blog" className="text-gray-700 hover:text-black">{t('blog')}</Link></li>
             </ul>
           </div>
           <div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, Phone, Stethoscope, MessageSquare, User, Pill, AlertCircle, Heart, Syringe, Newspaper } from "lucide-react";
+import { Menu, X, Phone, Stethoscope, MessageSquare, User, Pill, AlertCircle, Heart, Syringe } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 
@@ -15,7 +15,6 @@ const Navbar = () => {
     { path: "/allergy-checker", label: t('allergy'), icon: AlertCircle },
     { path: "/mental-health", label: t('mental'), icon: Heart },
     { path: "/vaccination-checker", label: t('vaccine'), icon: Syringe },
-    { path: "/blog", label: t('blog'), icon: Newspaper },
   ];
 
   return (

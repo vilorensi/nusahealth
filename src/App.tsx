@@ -13,7 +13,6 @@ import DrugChecker from "./pages/DrugChecker";
 import AllergyChecker from "./pages/AllergyChecker";
 import MentalHealth from "./pages/MentalHealth";
 import VaccinationChecker from "./pages/VaccinationChecker";
-import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -33,7 +32,6 @@ const App = () => (
             <Route path="/allergy-checker" element={<AllergyChecker />} />
             <Route path="/mental-health" element={<MentalHealth />} />
             <Route path="/vaccination-checker" element={<VaccinationChecker />} />
-            <Route path="/blog" element={<Blog />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
