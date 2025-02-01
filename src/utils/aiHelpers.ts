@@ -7,22 +7,32 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('*')
-      .eq('name', 'openai_api_key');
+      .eq('name', 'openai_api_key')
+      .single();
 
-    console.log('Supabase query result:', { data: secretData, error: secretError });
+    console.log('Supabase query result:', { 
+      data: secretData ? 'API key exists' : 'No API key found', 
+      error: secretError 
+    });
 
     if (secretError) {
       console.error('Error fetching API key:', secretError);
       throw new Error('Failed to get API key: ' + secretError.message);
     }
 
-    if (!secretData || secretData.length === 0 || !secretData[0]?.value) {
+    if (!secretData?.value) {
       console.error('No API key found in secrets table');
       throw new Error('OpenAI API key not found in Supabase secrets.');
     }
 
-    const openAIApiKey = secretData[0].value;
+    const openAIApiKey = secretData.value;
     console.log('API Key retrieved successfully');
+
+    // Validate API key format
+    if (!openAIApiKey.startsWith('sk-')) {
+      console.error('Invalid API key format');
+      throw new Error('Invalid OpenAI API key format');
+    }
 
     console.log('Making request to OpenAI API...');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -55,7 +65,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     }
 
     const data = await response.json();
-    console.log('OpenAI API Response:', data);
+    console.log('OpenAI API Response received');
     
     if (!data.choices?.[0]?.message?.content) {
       console.error('Unexpected API response format:', data);
