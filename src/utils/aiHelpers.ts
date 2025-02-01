@@ -9,9 +9,14 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
       .eq('name', 'OPENAI_API_KEY')
       .single();
 
-    if (secretError || !secretData) {
+    if (secretError) {
       console.error('Error fetching OpenAI API key:', secretError);
-      throw new Error('Failed to get API key');
+      throw new Error('Failed to get API key: ' + secretError.message);
+    }
+
+    if (!secretData || !secretData.value) {
+      console.error('No API key found in secrets');
+      throw new Error('No API key found in secrets');
     }
 
     console.log('Making request to OpenAI API...');
@@ -40,12 +45,18 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('OpenAI API Error:', errorData);
-      throw new Error('Failed to get answer from OpenAI');
+      console.error('OpenAI API Error Response:', errorData);
+      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
     console.log('OpenAI API Response:', data);
+    
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error('Unexpected API response format:', data);
+      throw new Error('Unexpected API response format');
+    }
+
     return data.choices[0].message.content;
   } catch (error) {
     console.error('AI Response Error:', error);
