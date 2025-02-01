@@ -32,10 +32,10 @@ const Index = () => {
       <div className="bg-gradient-to-r from-primary to-secondary py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/placeholder.svg')] opacity-10" />
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 font-display">
+          <h1 className="text-4xl md:text-5xl font-bold text-black mb-4 font-display">
             {t('welcome')}
           </h1>
-          <p className="text-xl text-white/90 mb-8">
+          <p className="text-xl text-black mb-8">
             {t('subtitle')}
           </p>
           <div className="max-w-xl mx-auto">
@@ -44,9 +44,9 @@ const Index = () => {
               <input
                 type="text"
                 placeholder={t('searchPlaceholder')}
-                className="flex-1 p-2 outline-none bg-transparent"
+                className="flex-1 p-2 outline-none bg-transparent text-black"
               />
-              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button className="bg-accent hover:bg-accent/90 text-black">
                 {language === 'en' ? 'Search' : 'Cari'}
               </Button>
             </div>
@@ -66,9 +66,9 @@ const Index = () => {
               <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
                 <Stethoscope className="text-primary w-8 h-8" />
               </div>
-              <h3 className="text-xl font-semibold ml-4 text-primary">{t('checkSymptoms')}</h3>
+              <h3 className="text-xl font-semibold ml-4 text-black">{t('checkSymptoms')}</h3>
             </div>
-            <p className="text-gray-600 text-lg">
+            <p className="text-black text-lg">
               {t('checkSymptomsDesc')}
             </p>
           </Link>
@@ -82,9 +82,9 @@ const Index = () => {
               <div className="p-3 rounded-full bg-secondary/10 group-hover:bg-secondary/20 transition-colors">
                 <Hospital className="text-secondary w-8 h-8" />
               </div>
-              <h3 className="text-xl font-semibold ml-4 text-secondary">{t('findServices')}</h3>
+              <h3 className="text-xl font-semibold ml-4 text-black">{t('findServices')}</h3>
             </div>
-            <p className="text-gray-600 text-lg">
+            <p className="text-black text-lg">
               {t('findServicesDesc')}
             </p>
           </Link>
@@ -95,9 +95,9 @@ const Index = () => {
               <div className="p-3 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-colors">
                 <Phone className="text-accent w-8 h-8" />
               </div>
-              <h3 className="text-xl font-semibold ml-4 text-accent">{t('emergency')}</h3>
+              <h3 className="text-xl font-semibold ml-4 text-black">{t('emergency')}</h3>
             </div>
-            <p className="text-gray-600 text-lg mb-4">
+            <p className="text-black text-lg mb-4">
               {t('emergencyDesc')}
             </p>
             <a
