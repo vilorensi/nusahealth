@@ -115,17 +115,21 @@ const Symptoms = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#C5E1A5]/30 to-white">
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8" role="main">
         <Card className="max-w-3xl mx-auto">
           <CardHeader>
-            <CardTitle>{t('symptomChecker')}</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-2xl md:text-3xl">{t('symptomChecker')}</CardTitle>
+            <CardDescription className="text-base md:text-lg">
               {t('symptomCheckerDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Alert className="mb-6 bg-[#F4A261]/20 border-[#F4A261]">
-              <AlertCircle className="h-4 w-4" />
+            <Alert 
+              className="mb-6 bg-[#F4A261]/20 border-[#F4A261]"
+              role="alert"
+              aria-live="polite"
+            >
+              <AlertCircle className="h-4 w-4" aria-hidden="true" />
               <AlertTitle>Important</AlertTitle>
               <AlertDescription>
                 If you are experiencing severe symptoms or believe you have a medical emergency,
@@ -135,14 +139,20 @@ const Symptoms = () => {
             </Alert>
 
             <div className="mb-6">
-              <FormLabel>OpenAI API Key</FormLabel>
+              <FormLabel htmlFor="apiKey">OpenAI API Key</FormLabel>
               <Input
+                id="apiKey"
                 type="password"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
                 placeholder="Enter your OpenAI API key"
                 className="mt-1"
+                aria-required="true"
+                aria-describedby="apikey-description"
               />
+              <p id="apikey-description" className="text-sm text-muted-foreground mt-1">
+                Required to analyze symptoms using AI
+              </p>
             </div>
 
             <Form {...form}>
@@ -152,12 +162,14 @@ const Symptoms = () => {
                   name="symptoms"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Describe your symptoms</FormLabel>
+                      <FormLabel htmlFor="symptoms">Describe your symptoms</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
+                          id="symptoms"
                           placeholder="Please describe your symptoms in detail..."
-                          className="min-h-[120px]"
+                          className="min-h-[120px] resize-y"
+                          aria-required="true"
                         />
                       </FormControl>
                     </FormItem>
@@ -170,9 +182,17 @@ const Symptoms = () => {
                     name="age"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Age</FormLabel>
+                        <FormLabel htmlFor="age">Age</FormLabel>
                         <FormControl>
-                          <Input {...field} type="number" placeholder="Enter your age" />
+                          <Input 
+                            {...field} 
+                            id="age"
+                            type="number" 
+                            placeholder="Enter your age"
+                            min="0"
+                            max="150"
+                            aria-required="true"
+                          />
                         </FormControl>
                       </FormItem>
                     )}
@@ -183,12 +203,13 @@ const Symptoms = () => {
                     name="gender"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Gender</FormLabel>
+                        <FormLabel id="gender-group">Gender</FormLabel>
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
                             defaultValue={field.value}
-                            className="flex space-x-4"
+                            className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4"
+                            aria-labelledby="gender-group"
                           >
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="male" id="male" />
@@ -210,9 +231,14 @@ const Symptoms = () => {
                   name="duration"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Duration of Symptoms</FormLabel>
+                      <FormLabel htmlFor="duration">Duration of Symptoms</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="How long have you had these symptoms?" />
+                        <Input 
+                          {...field} 
+                          id="duration"
+                          placeholder="How long have you had these symptoms?"
+                          aria-required="true"
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -223,12 +249,13 @@ const Symptoms = () => {
                   name="severity"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Severity</FormLabel>
+                      <FormLabel id="severity-group">Severity</FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                           className="flex flex-col space-y-2"
+                          aria-labelledby="severity-group"
                         >
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="mild" id="mild" />
@@ -253,12 +280,14 @@ const Symptoms = () => {
                   name="medicalHistory"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Medical History</FormLabel>
+                      <FormLabel htmlFor="medicalHistory">Medical History</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
+                          id="medicalHistory"
                           placeholder="Any relevant medical history, medications, or conditions..."
-                          className="min-h-[100px]"
+                          className="min-h-[100px] resize-y"
+                          aria-required="true"
                         />
                       </FormControl>
                     </FormItem>
@@ -268,12 +297,13 @@ const Symptoms = () => {
                 <Button 
                   type="submit" 
                   disabled={isLoading}
-                  className="w-full"
+                  className="w-full md:w-auto"
+                  aria-busy={isLoading}
                 >
                   {isLoading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Analyzing Symptoms...
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+                      <span>Analyzing Symptoms...</span>
                     </>
                   ) : (
                     "Analyze Symptoms"
@@ -283,7 +313,11 @@ const Symptoms = () => {
             </Form>
 
             {result && (
-              <div className="mt-8 p-6 bg-white/50 backdrop-blur-sm rounded-lg border border-primary/20">
+              <div 
+                className="mt-8 p-6 bg-white/50 backdrop-blur-sm rounded-lg border border-primary/20"
+                role="region"
+                aria-label="Assessment Result"
+              >
                 <h3 className="text-lg font-semibold mb-3">Assessment Result</h3>
                 <p className="whitespace-pre-wrap">{result}</p>
                 <div className="mt-4 pt-4 border-t border-primary/10">
