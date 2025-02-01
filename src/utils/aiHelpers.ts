@@ -1,6 +1,8 @@
 import { supabase } from "@/integrations/supabase/client";
+import OpenAI from "openai";
 
-async function checkApiKey() {
+const checkApiKey = async () => {
+  console.log("Checking Supabase connection...");
   const { data, error } = await supabase
     .from("secrets")
     .select("value")
@@ -8,74 +10,47 @@ async function checkApiKey() {
     .single();
 
   console.log("Supabase API response:", data, error);
-}
+};
 
-// Run the check immediately
+// Run check immediately when file loads
 checkApiKey();
 
-export const getAIResponse = async (prompt: string, systemPrompt: string) => {
+export const getAIResponse = async (userInput: string, systemPrompt: string) => {
   try {
-    console.log('Checking Supabase connection...');
-    const { data: secretData, error: secretError } = await supabase
-      .from('secrets')
+    console.log("Making request to OpenAI API...");
+    
+    const { data, error } = await supabase
+      .from("secrets")
       .select("value")
       .eq("name", "openai_api_key")
       .single();
 
-    if (secretError) {
-      console.error('Error fetching API key:', secretError);
-      throw new Error('Failed to get API key: ' + secretError.message);
+    if (error) {
+      throw new Error(`Failed to get API key: ${error.message}`);
     }
 
-    if (!secretData?.value) {
-      console.error('No API key found');
-      throw new Error('OpenAI API key not found');
+    if (!data?.value) {
+      throw new Error("No API key found");
     }
 
-    const openAIApiKey = secretData.value;
-    console.log('API Key retrieved successfully');
+    console.log("API Key retrieved successfully");
 
-    console.log('Making request to OpenAI API...');
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: [
-          {
-            role: 'system',
-            content: systemPrompt
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        temperature: 0.2,
-        max_tokens: 1000,
-      }),
+    const openai = new OpenAI({
+      apiKey: data.value,
+      dangerouslyAllowBrowser: true
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('OpenAI API Error Response:', errorData);
-      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
-    }
+    const completion = await openai.chat.completions.create({
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userInput }
+      ],
+      model: "gpt-3.5-turbo",
+    });
 
-    const data = await response.json();
-    console.log('OpenAI API Response received');
-    
-    if (!data.choices?.[0]?.message?.content) {
-      console.error('Unexpected API response format:', data);
-      throw new Error('Unexpected API response format');
-    }
-
-    return data.choices[0].message.content;
+    return completion.choices[0].message.content;
   } catch (error) {
-    console.error('AI Response Error:', error);
-    throw error;
+    console.error("OpenAI API Error Response:", error);
+    throw new Error(`AI Response Error: ${JSON.stringify(error)}`);
   }
 };
