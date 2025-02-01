@@ -12,9 +12,7 @@ import FindDoctor from "./pages/FindDoctor";
 import DrugChecker from "./pages/DrugChecker";
 import AllergyChecker from "./pages/AllergyChecker";
 import MentalHealth from "./pages/MentalHealth";
-import GenderHealth from "./pages/GenderHealth";
 import VaccinationChecker from "./pages/VaccinationChecker";
-import HealthEducation from "./pages/HealthEducation";
 import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
@@ -34,9 +32,7 @@ const App = () => (
             <Route path="/drug-checker" element={<DrugChecker />} />
             <Route path="/allergy-checker" element={<AllergyChecker />} />
             <Route path="/mental-health" element={<MentalHealth />} />
-            <Route path="/gender-health" element={<GenderHealth />} />
             <Route path="/vaccination-checker" element={<VaccinationChecker />} />
-            <Route path="/health-education" element={<HealthEducation />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
