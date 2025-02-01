@@ -7,6 +7,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
       .from('secrets')
       .select('value')
       .eq('name', 'OPENAI_API_KEY')
+      .limit(1)
       .single();
 
     if (secretError) {
