@@ -6,7 +6,7 @@ const Footer = () => {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-gradient-to-b from-primary/30 to-secondary/30 text-gray-700 mt-20">
+    <footer className="bg-gradient-to-b from-[#F2FCE2]/30 to-[#E2F5E9]/30 text-gray-700 mt-20">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -23,17 +23,17 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/symptoms" className="text-gray-700 hover:text-primary transition-colors duration-300">
+                <Link to="/symptoms" className="text-gray-700 hover:text-[#A7D7A5] transition-colors duration-300">
                   {t('symptomChecker')}
                 </Link>
               </li>
               <li>
-                <Link to="/find-doctor" className="text-gray-700 hover:text-primary transition-colors duration-300">
+                <Link to="/find-doctor" className="text-gray-700 hover:text-[#A7D7A5] transition-colors duration-300">
                   {t('findDoctor')}
                 </Link>
               </li>
               <li>
-                <Link to="/health-qa" className="text-gray-700 hover:text-primary transition-colors duration-300">
+                <Link to="/health-qa" className="text-gray-700 hover:text-[#A7D7A5] transition-colors duration-300">
                   {t('healthQA')}
                 </Link>
               </li>

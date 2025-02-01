@@ -66,13 +66,13 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="relative min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-primary/30 via-white to-secondary/30 overflow-hidden">
+    <div className="relative min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-[#F2FCE2]/80 via-white to-[#E2F5E9]/80 overflow-hidden">
       {/* Subtle background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-[0.015]" />
-        <div className="absolute h-64 w-64 -left-32 -top-32 bg-primary rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob" />
-        <div className="absolute h-64 w-64 -right-32 -bottom-32 bg-secondary rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000" />
-        <div className="absolute h-64 w-64 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-accent rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000" />
+        <div className="absolute h-64 w-64 -left-32 -top-32 bg-[#F2FCE2] rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob" />
+        <div className="absolute h-64 w-64 -right-32 -bottom-32 bg-[#E2F5E9] rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000" />
+        <div className="absolute h-64 w-64 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#D4F2EA] rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000" />
         
         {/* Subtle clouds */}
         <Cloud className="animate-cloud top-1/4" />
@@ -95,20 +95,20 @@ const HeroSection = () => {
           <div className="max-w-2xl mx-auto transform hover:scale-105 transition-all duration-300 animate-slide-in" style={{ animationDelay: '0.4s' }}>
             <div className="flex flex-col sm:flex-row items-center gap-3 bg-white/60 backdrop-blur-md p-3 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="flex items-center flex-1 w-full bg-white/50 rounded-xl px-4 group">
-                <Search className="text-gray-400 group-hover:text-secondary transition-colors" />
+                <Search className="text-gray-400 group-hover:text-[#A7D7A5] transition-colors" />
                 <input
                   type="text"
                   value={symptoms}
                   onChange={(e) => setSymptoms(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder={language === 'en' ? 'Describe your symptoms...' : 'Jelaskan gejala Anda...'}
-                  className="w-full p-4 bg-transparent outline-none text-gray-800 placeholder-gray-400 focus:placeholder-secondary/70 transition-all"
+                  className="w-full p-4 bg-transparent outline-none text-gray-800 placeholder-gray-400 focus:placeholder-[#A7D7A5]/70 transition-all"
                 />
               </div>
               <Button 
                 onClick={handleSymptomSearch}
                 disabled={isLoading}
-                className="w-full sm:w-auto bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-gray-800 font-medium px-8 py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+                className="w-full sm:w-auto bg-gradient-to-r from-[#F2FCE2] to-[#E2F5E9] hover:from-[#E2F5E9] hover:to-[#F2FCE2] text-gray-800 font-medium px-8 py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
               >
                 {isLoading ? (
                   <>
