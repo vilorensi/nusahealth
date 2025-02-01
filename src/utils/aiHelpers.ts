@@ -7,6 +7,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
       .from('secrets')
       .select('value')
       .eq('name', 'OPENAI_API_KEY')
+      .limit(1)
       .single();
 
     if (secretError) {
@@ -27,7 +28,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "gpt-4",
         messages: [
           {
             role: 'system',
