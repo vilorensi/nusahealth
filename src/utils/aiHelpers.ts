@@ -3,10 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 async function checkApiKey() {
   const { data, error } = await supabase
     .from("secrets")
-    .select("*")
-    .eq("name", "openai_api_key");
+    .select("value")
+    .eq("name", "openai_api_key")
+    .single();
 
-  console.log("Supabase API Key Data:", data, error);
+  console.log("Supabase API response:", data, error);
 }
 
 // Run the check immediately
@@ -14,18 +15,12 @@ checkApiKey();
 
 export const getAIResponse = async (prompt: string, systemPrompt: string) => {
   try {
-    // Debug Supabase connection
     console.log('Checking Supabase connection...');
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
-      .select('*')
-      .eq('name', 'openai_api_key')
+      .select("value")
+      .eq("name", "openai_api_key")
       .single();
-
-    console.log('Supabase query result:', { 
-      data: secretData ? 'API key exists' : 'No API key found', 
-      error: secretError 
-    });
 
     if (secretError) {
       console.error('Error fetching API key:', secretError);
@@ -33,8 +28,8 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
     }
 
     if (!secretData?.value) {
-      console.error('No API key found in secrets table');
-      throw new Error('OpenAI API key not found in Supabase secrets.');
+      console.error('No API key found');
+      throw new Error('OpenAI API key not found');
     }
 
     const openAIApiKey = secretData.value;
