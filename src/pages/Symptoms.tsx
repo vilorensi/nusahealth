@@ -7,24 +7,25 @@ import { AlertCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SymptomForm } from "@/components/symptoms/SymptomForm";
 import { ResultDisplay } from "@/components/symptoms/ResultDisplay";
+import { getAIResponse } from "@/utils/aiHelpers";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const Symptoms = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
-  const [apiKey, setApiKey] = useState<string>("");
   const { toast } = useToast();
   const { t } = useLanguage();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const initialResult = searchParams.get('initial');
+    if (initialResult) {
+      setResult(decodeURIComponent(initialResult));
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (data: any) => {
-    if (!apiKey) {
-      toast({
-        title: "Error",
-        description: "Please enter your OpenAI API key",
-        variant: "destructive",
-      });
-      return;
-    }
-
     if (!data.symptoms.trim()) {
       toast({
         title: "Error",
@@ -36,43 +37,19 @@ const Symptoms = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: "gpt-4",
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a medical AI assistant performing initial symptom assessment. Provide clear analysis and always include a disclaimer about consulting healthcare professionals.'
-            },
-            {
-              role: 'user',
-              content: `Patient Information:
-                Age: ${data.age}
-                Gender: ${data.gender}
-                Symptoms: ${data.symptoms}
-                Duration: ${data.duration}
-                Severity: ${data.severity}
-                Medical History: ${data.medicalHistory}
-                
-                Please provide an initial assessment of these symptoms.`
-            }
-          ],
-          temperature: 0.2,
-          max_tokens: 1000,
-        }),
-      });
+      const systemPrompt = 'You are a medical AI assistant performing initial symptom assessment. Provide clear analysis and always include a disclaimer about consulting healthcare professionals.';
+      const prompt = `Patient Information:
+        Age: ${data.age}
+        Gender: ${data.gender}
+        Symptoms: ${data.symptoms}
+        Duration: ${data.duration}
+        Severity: ${data.severity}
+        Medical History: ${data.medicalHistory}
+        
+        Please provide an initial assessment of these symptoms.`;
 
-      if (!response.ok) {
-        throw new Error('Failed to analyze symptoms');
-      }
-
-      const responseData = await response.json();
-      setResult(responseData.choices[0].message.content);
+      const response = await getAIResponse(prompt, systemPrompt);
+      setResult(response);
       toast({
         title: "Assessment Complete",
         description: "Please review the detailed analysis below.",
@@ -80,7 +57,7 @@ const Symptoms = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to analyze symptoms. Please check your API key and try again.",
+        description: "Failed to analyze symptoms. Please try again.",
         variant: "destructive",
       });
       console.error('API Error:', error);
@@ -118,8 +95,6 @@ const Symptoms = () => {
             <SymptomForm
               onSubmit={handleSubmit}
               isLoading={isLoading}
-              apiKey={apiKey}
-              setApiKey={setApiKey}
             />
 
             <ResultDisplay result={result} />

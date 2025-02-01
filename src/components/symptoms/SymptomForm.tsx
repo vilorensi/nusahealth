@@ -4,7 +4,6 @@ import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
-import { ApiKeyInput } from "./ApiKeyInput";
 import { SeverityRadioGroup } from "./SeverityRadioGroup";
 import { GenderRadioGroup } from "./GenderRadioGroup";
 
@@ -20,18 +19,14 @@ interface SymptomFormData {
 interface SymptomFormProps {
   onSubmit: (data: SymptomFormData) => void;
   isLoading: boolean;
-  apiKey: string;
-  setApiKey: (key: string) => void;
 }
 
-export const SymptomForm = ({ onSubmit, isLoading, apiKey, setApiKey }: SymptomFormProps) => {
+export const SymptomForm = ({ onSubmit, isLoading }: SymptomFormProps) => {
   const form = useForm<SymptomFormData>();
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <ApiKeyInput value={apiKey} onChange={setApiKey} />
-
         <div className="space-y-4">
           <div>
             <label htmlFor="symptoms" className="block text-sm font-medium mb-2">

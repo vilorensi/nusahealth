@@ -3,15 +3,41 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAIResponse } from "../../utils/aiHelpers";
+import { useToast } from "@/components/ui/use-toast";
 
 const HeroSection = () => {
   const { t, language } = useLanguage();
   const [symptoms, setSymptoms] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSymptomSearch = () => {
-    if (symptoms.trim()) {
-      navigate(`/symptoms?query=${encodeURIComponent(symptoms)}`);
+  const handleSymptomSearch = async () => {
+    if (!symptoms.trim()) {
+      toast({
+        title: "Error",
+        description: language === 'en' ? "Please describe your symptoms" : "Silakan jelaskan gejala Anda",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const systemPrompt = 'You are a medical AI assistant performing initial symptom assessment. Provide a brief initial assessment and recommend whether the patient should seek immediate medical attention. Keep the response concise.';
+      const response = await getAIResponse(symptoms, systemPrompt);
+      
+      // Store the response in the URL state and navigate to the symptoms page
+      navigate(`/symptoms?query=${encodeURIComponent(symptoms)}&initial=${encodeURIComponent(response)}`);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: language === 'en' ? "Failed to analyze symptoms. Please try again." : "Gagal menganalisis gejala. Silakan coba lagi.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -46,9 +72,17 @@ const HeroSection = () => {
             </div>
             <Button 
               onClick={handleSymptomSearch}
+              disabled={isLoading}
               className="bg-accent hover:bg-accent/90 text-black w-full sm:w-auto"
             >
-              {language === 'en' ? 'Check Symptoms' : 'Periksa Gejala'}
+              {isLoading ? (
+                <>
+                  <Search className="mr-2 h-4 w-4 animate-spin" />
+                  {language === 'en' ? 'Analyzing...' : 'Menganalisis...'}
+                </>
+              ) : (
+                language === 'en' ? 'Check Symptoms' : 'Periksa Gejala'
+              )}
             </Button>
           </div>
         </div>
