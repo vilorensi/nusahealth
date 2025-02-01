@@ -27,7 +27,7 @@ export const getAIResponse = async (prompt: string, systemPrompt: string) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-4o",  // Fixed model name here
+        model: "gpt-4",
         messages: [
           {
             role: 'system',
