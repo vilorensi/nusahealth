@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, Brain, Activity, Book, Compass } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 interface SymptomForm {
@@ -49,18 +49,46 @@ const Symptoms = () => {
   };
 
   return (
-    <div className="min-h-screen bg-muted">
+    <div className="min-h-screen bg-[#C5E1A5]/30">
       <Navbar />
       <main className="container mx-auto px-4 py-8">
-        <Card className="max-w-3xl mx-auto shadow-lg">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-primary">AI Symptom Checker</CardTitle>
-            <CardDescription className="text-lg">
-              Get an initial assessment of your symptoms using our advanced AI system. Remember, this is not a replacement for professional medical advice.
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <Card className="bg-[#F4A261]/20 hover:bg-[#F4A261]/30 transition-colors cursor-pointer">
+            <CardContent className="p-6 flex flex-col items-center">
+              <Brain className="h-8 w-8 mb-2 text-[#264653]" />
+              <span className="text-sm font-medium">Self Assessment</span>
+            </CardContent>
+          </Card>
+          <Card className="bg-[#264653]/10 hover:bg-[#264653]/20 transition-colors cursor-pointer">
+            <CardContent className="p-6 flex flex-col items-center">
+              <Activity className="h-8 w-8 mb-2 text-[#264653]" />
+              <span className="text-sm font-medium">Track Symptoms</span>
+            </CardContent>
+          </Card>
+          <Card className="bg-[#F4A261]/20 hover:bg-[#F4A261]/30 transition-colors cursor-pointer">
+            <CardContent className="p-6 flex flex-col items-center">
+              <Book className="h-8 w-8 mb-2 text-[#264653]" />
+              <span className="text-sm font-medium">Health Guide</span>
+            </CardContent>
+          </Card>
+          <Card className="bg-[#264653]/10 hover:bg-[#264653]/20 transition-colors cursor-pointer">
+            <CardContent className="p-6 flex flex-col items-center">
+              <Compass className="h-8 w-8 mb-2 text-[#264653]" />
+              <span className="text-sm font-medium">Find Help</span>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="max-w-3xl mx-auto shadow-lg bg-white/80 backdrop-blur-sm">
+          <CardHeader className="text-center space-y-2">
+            <CardTitle className="text-2xl font-bold text-[#264653]">AI Symptom Assessment</CardTitle>
+            <CardDescription className="text-lg text-[#264653]/80">
+              Get an initial assessment of your symptoms using our advanced AI system
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Alert className="mb-6 bg-accent/20 border-accent">
+            <Alert className="mb-6 bg-[#F4A261]/20 border-[#F4A261] text-[#264653]">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Important Notice</AlertTitle>
               <AlertDescription>
@@ -75,12 +103,12 @@ const Symptoms = () => {
                   name="symptoms"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base">What symptoms are you experiencing?</FormLabel>
+                      <FormLabel className="text-base text-[#264653]">What symptoms are you experiencing?</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
                           placeholder="Please describe your symptoms in detail..."
-                          className="min-h-[120px] resize-none"
+                          className="min-h-[120px] resize-none bg-white/50 border-[#264653]/20 focus:border-[#264653]"
                         />
                       </FormControl>
                     </FormItem>
@@ -197,7 +225,11 @@ const Symptoms = () => {
                   )}
                 />
 
-                <Button type="submit" disabled={isLoading} className="w-full">
+                <Button 
+                  type="submit" 
+                  disabled={isLoading} 
+                  className="w-full bg-[#264653] hover:bg-[#264653]/90 text-white"
+                >
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -211,11 +243,11 @@ const Symptoms = () => {
             </Form>
 
             {result && (
-              <div className="mt-8 p-6 bg-card rounded-lg border shadow-sm">
-                <h3 className="text-lg font-semibold text-primary mb-3">Assessment Result:</h3>
-                <p className="text-card-foreground leading-relaxed">{result}</p>
-                <div className="mt-4 pt-4 border-t">
-                  <p className="text-sm text-muted-foreground">
+              <div className="mt-8 p-6 bg-white/50 backdrop-blur-sm rounded-lg border border-[#264653]/20">
+                <h3 className="text-lg font-semibold text-[#264653] mb-3">Assessment Result:</h3>
+                <p className="text-[#264653]/80 leading-relaxed">{result}</p>
+                <div className="mt-4 pt-4 border-t border-[#264653]/10">
+                  <p className="text-sm text-[#264653]/60">
                     This is an AI-generated assessment and should not be considered as medical advice. 
                     Please consult with a healthcare professional for proper diagnosis and treatment.
                   </p>
