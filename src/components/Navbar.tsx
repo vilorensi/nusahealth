@@ -1,21 +1,23 @@
 import { useState } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Stethoscope, MessageSquare, User, Pill, AlertCircle, Heart, Syringe, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useLanguage();
 
   const navItems = [
-    { path: "/symptoms", label: "Symptom Checker" },
-    { path: "/health-qa", label: "Health Q&A" },
-    { path: "/find-doctor", label: "Find Doctor" },
-    { path: "/drug-checker", label: "Drug Checker" },
-    { path: "/allergy-checker", label: "Allergy Checker" },
-    { path: "/mental-health", label: "Mental Health" },
-    { path: "/womens-health", label: "Women's Health" },
-    { path: "/mens-health", label: "Men's Health" },
-    { path: "/vaccination-checker", label: "Vaccination" },
-    { path: "/health-education", label: "Health Education" },
+    { path: "/symptoms", label: t("symptomChecker"), icon: Stethoscope },
+    { path: "/health-qa", label: t("healthQA"), icon: MessageSquare },
+    { path: "/find-doctor", label: t("findDoctor"), icon: User },
+    { path: "/drug-checker", label: t("drugChecker"), icon: Pill },
+    { path: "/allergy-checker", label: t("allergyChecker"), icon: AlertCircle },
+    { path: "/mental-health", label: t("mentalHealth"), icon: Heart },
+    { path: "/womens-health", label: t("womensHealth"), icon: Heart },
+    { path: "/mens-health", label: t("mensHealth"), icon: Heart },
+    { path: "/vaccination-checker", label: t("vaccination"), icon: Syringe },
+    { path: "/health-education", label: t("healthEducation"), icon: BookOpen },
   ];
 
   return (
@@ -24,7 +26,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="text-primary text-xl font-bold">SehatIndonesia</span>
+              <span className="text-primary text-xl font-bold">NusaHealth</span>
             </Link>
           </div>
 
@@ -34,8 +36,9 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className="text-secondary hover:text-primary px-3 py-2 text-sm font-medium"
+                className="flex items-center text-secondary hover:text-primary px-3 py-2 text-sm font-medium"
               >
+                <item.icon className="w-4 h-4 mr-2" />
                 {item.label}
               </Link>
             ))}
@@ -53,6 +56,8 @@ const Navbar = () => {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-secondary hover:text-primary"
+              aria-expanded={isOpen}
+              aria-label="Toggle navigation menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -68,9 +73,10 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className="block px-3 py-2 rounded-md text-base font-medium text-secondary hover:text-primary"
+                className="flex items-center px-3 py-2 rounded-md text-base font-medium text-secondary hover:text-primary"
                 onClick={() => setIsOpen(false)}
               >
+                <item.icon className="w-4 h-4 mr-2" />
                 {item.label}
               </Link>
             ))}
