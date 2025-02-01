@@ -9,42 +9,21 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      secret: {
-        Row: {
-          id: number
-          key_name: string
-          key_value: string | null
-        }
-        Insert: {
-          id?: number
-          key_name?: string
-          key_value?: string | null
-        }
-        Update: {
-          id?: number
-          key_name?: string
-          key_value?: string | null
-        }
-        Relationships: []
-      }
       secrets: {
         Row: {
-          created_at: string
-          id: string
+          id: number
           name: string
-          value: string
+          value: string | null
         }
         Insert: {
-          created_at?: string
-          id?: string
-          name: string
-          value: string
+          id?: number
+          name?: string
+          value?: string | null
         }
         Update: {
-          created_at?: string
-          id?: string
+          id?: number
           name?: string
-          value?: string
+          value?: string | null
         }
         Relationships: []
       }
