@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { SeverityRadioGroup } from "./SeverityRadioGroup";
 import { GenderRadioGroup } from "./GenderRadioGroup";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SymptomFormData {
   symptoms: string;
@@ -23,6 +24,7 @@ interface SymptomFormProps {
 
 export const SymptomForm = ({ onSubmit, isLoading }: SymptomFormProps) => {
   const form = useForm<SymptomFormData>();
+  const { t } = useLanguage();
 
   return (
     <Form {...form}>
@@ -30,12 +32,12 @@ export const SymptomForm = ({ onSubmit, isLoading }: SymptomFormProps) => {
         <div className="space-y-4">
           <div>
             <label htmlFor="symptoms" className="block text-sm font-medium mb-2">
-              Describe your symptoms
+              {t('describeSymptoms')}
             </label>
             <Textarea
               id="symptoms"
-              {...form.register("symptoms")}
-              placeholder="Please describe your symptoms in detail..."
+              {...form.register("symptoms", { required: true })}
+              placeholder={t('symptomsPlaceholder')}
               className="min-h-[120px] resize-y"
               aria-required="true"
             />
@@ -44,13 +46,13 @@ export const SymptomForm = ({ onSubmit, isLoading }: SymptomFormProps) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="age" className="block text-sm font-medium mb-2">
-                Age
+                {t('age')}
               </label>
               <Input
                 id="age"
                 type="number"
-                {...form.register("age")}
-                placeholder="Enter your age"
+                {...form.register("age", { required: true })}
+                placeholder={t('agePlaceholder')}
                 min="0"
                 max="150"
                 aria-required="true"
@@ -62,12 +64,12 @@ export const SymptomForm = ({ onSubmit, isLoading }: SymptomFormProps) => {
 
           <div>
             <label htmlFor="duration" className="block text-sm font-medium mb-2">
-              Duration of Symptoms
+              {t('durationOfSymptoms')}
             </label>
             <Input
               id="duration"
-              {...form.register("duration")}
-              placeholder="How long have you had these symptoms?"
+              {...form.register("duration", { required: true })}
+              placeholder={t('durationPlaceholder')}
               aria-required="true"
             />
           </div>
@@ -76,12 +78,12 @@ export const SymptomForm = ({ onSubmit, isLoading }: SymptomFormProps) => {
 
           <div>
             <label htmlFor="medicalHistory" className="block text-sm font-medium mb-2">
-              Medical History
+              {t('medicalHistory')}
             </label>
             <Textarea
               id="medicalHistory"
-              {...form.register("medicalHistory")}
-              placeholder="Any relevant medical history, medications, or conditions..."
+              {...form.register("medicalHistory", { required: true })}
+              placeholder={t('medicalHistoryPlaceholder')}
               className="min-h-[100px] resize-y"
               aria-required="true"
             />
@@ -92,10 +94,10 @@ export const SymptomForm = ({ onSubmit, isLoading }: SymptomFormProps) => {
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
-              <span>Analyzing Symptoms...</span>
+              <span>{t('analyzingSymptoms')}</span>
             </>
           ) : (
-            "Analyze Symptoms"
+            t('analyzeSymptoms')
           )}
         </Button>
       </form>
