@@ -49,7 +49,7 @@ export default {
           foreground: "#000000",
         },
         radio: {
-          DEFAULT: "#4A8F47", // Darker green for radio buttons
+          DEFAULT: "#000000", // Changed to black
         }
       },
       borderRadius: {
