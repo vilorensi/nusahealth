@@ -34,24 +34,32 @@ const HeroSection = () => {
       const systemPrompt = 'You are a medical AI assistant performing initial symptom assessment. Provide a brief initial assessment and recommend whether the patient should seek immediate medical attention. Keep the response concise.';
       
       const { data, error } = await supabase.functions.invoke('fetch-openai', {
-        body: { message: symptoms, systemPrompt }
+        body: { 
+          message: symptoms, 
+          systemPrompt,
+          model: "gpt-4o-mini"
+        }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
       
       if (!data?.choices?.[0]?.message?.content) {
+        console.error('Invalid response structure:', data);
         throw new Error('Invalid response from AI');
       }
       
       const response = data.choices[0].message.content;
       navigate(`/symptoms?query=${encodeURIComponent(symptoms)}&initial=${encodeURIComponent(response)}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error analyzing symptoms:', error);
       toast({
         title: "Error",
         description: language === 'en' 
-          ? "Failed to analyze symptoms. Please try again later." 
-          : "Gagal menganalisis gejala. Silakan coba lagi nanti.",
+          ? `Failed to analyze symptoms: ${error.message}` 
+          : `Gagal menganalisis gejala: ${error.message}`,
         variant: "destructive",
       });
     } finally {

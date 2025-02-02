@@ -12,41 +12,55 @@ serve(async (req) => {
   }
 
   try {
-    const { message, systemPrompt } = await req.json();
+    const { message, systemPrompt, model = "gpt-4o-mini" } = await req.json();
     
-    if (!message) {
-      return new Response(
-        JSON.stringify({ error: 'No message provided' }), 
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    if (!message || !systemPrompt) {
+      throw new Error('Missing required parameters');
     }
 
-    const openAiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model,
         messages: [
-          { role: 'system', content: systemPrompt || 'You are a helpful medical assistant.' },
+          { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
         ],
+        temperature: 0.7,
+        max_tokens: 500,
       }),
     });
 
-    const data = await openAiResponse.json();
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('OpenAI API error:', error);
+      throw new Error(error.error?.message || 'Failed to get AI response');
+    }
+
+    const data = await response.json();
     
-    return new Response(
-      JSON.stringify(data),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    if (!data.choices?.[0]?.message?.content) {
+      throw new Error('Invalid response structure from OpenAI');
+    }
+
+    return new Response(JSON.stringify(data), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error('Error in fetch-openai function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }), 
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        error: true, 
+        message: error.message || 'An error occurred while processing your request' 
+      }),
+      { 
+        status: 500, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
     );
   }
 });
