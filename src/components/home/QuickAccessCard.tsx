@@ -46,7 +46,7 @@ const QuickAccessCard = ({
           <div className={`p-3 rounded-xl bg-${iconColor}/20 group-hover:bg-${iconColor}/30 transition-colors duration-300`}>
             <Icon className={`w-6 h-6 text-${iconColor}-600 group-hover:scale-110 transition-transform duration-300 animate-float`} />
           </div>
-          <h3 className="text-xl font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:from-secondary group-hover:to-primary transition-all duration-300">
+          <h3 className="text-xl font-semibold text-black">
             {title}
           </h3>
         </div>
