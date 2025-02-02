@@ -48,6 +48,9 @@ export default {
           DEFAULT: "#FFFFFF",
           foreground: "#000000",
         },
+        radio: {
+          DEFAULT: "#4A8F47", // Darker green for radio buttons
+        }
       },
       borderRadius: {
         lg: "var(--radius)",

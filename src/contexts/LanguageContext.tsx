@@ -32,7 +32,6 @@ const translations = {
     checkSymptoms: "Check Symptoms",
     checkSymptomsDesc: "Get an AI-powered assessment of your symptoms",
     popularTopics: "Popular Health Topics",
-    // Footer translations
     aboutNusaHealth: "About NusaHealth",
     aboutDesc: "Providing reliable health information and connecting you with healthcare services across Indonesia",
     quickLinks: "Quick Links",
@@ -40,15 +39,41 @@ const translations = {
     disclaimer: "Disclaimer",
     disclaimerText: "The information provided on this website is for general informational purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment.",
     allRightsReserved: "All rights reserved",
-    // Navigation translations
+    describeSymptoms: "Describe your symptoms",
+    symptomsPlaceholder: "Please describe your symptoms in detail...",
+    age: "Age",
+    agePlaceholder: "Enter your age",
+    gender: "Gender",
+    male: "Male",
+    female: "Female",
+    durationOfSymptoms: "Duration of Symptoms",
+    durationPlaceholder: "How long have you had these symptoms?",
+    severity: "Severity",
+    mild: "Mild",
+    moderate: "Moderate",
+    severe: "Severe",
+    medicalHistory: "Medical History",
+    medicalHistoryPlaceholder: "Any relevant medical history or conditions...",
+    analyzeSymptoms: "Analyze Symptoms",
+    analyzingSymptoms: "Analyzing...",
     symptoms: "Symptoms",
+    symptomCheckerTitle: "Symptom Checker",
+    symptomCheckerDesc: "Get an initial assessment of your symptoms",
     qa: "Q&A",
-    doctor: "Doctor",
+    healthQATitle: "Health Q&A",
+    healthQADesc: "Ask health-related questions",
+    doctor: "Find Doctor",
+    findDoctorTitle: "Find a Doctor",
+    findDoctorDesc: "Search for healthcare providers",
     medication: "Medication",
+    medicationTitle: "Medication Information",
+    medicationDesc: "Learn about medications and interactions",
     allergy: "Allergy",
-    mental: "Mental",
-    vaccine: "Vaccine",
-    blog: "Blog"
+    allergyTitle: "Allergy Checker",
+    allergyDesc: "Check allergy symptoms and triggers",
+    mental: "Mental Health",
+    mentalHealthTitle: "Mental Health Assessment",
+    mentalHealthDesc: "Mental health resources and support"
   },
   id: {
     symptomChecker: "Pemeriksa Gejala AI",
@@ -73,7 +98,6 @@ const translations = {
     checkSymptoms: "Periksa Gejala",
     checkSymptomsDesc: "Dapatkan penilaian gejala Anda dengan bantuan AI",
     popularTopics: "Topik Kesehatan Populer",
-    // Footer translations
     aboutNusaHealth: "Tentang NusaHealth",
     aboutDesc: "Menyediakan informasi kesehatan yang terpercaya dan menghubungkan Anda dengan layanan kesehatan di seluruh Indonesia",
     quickLinks: "Tautan Cepat",
@@ -81,26 +105,50 @@ const translations = {
     disclaimer: "Peringatan",
     disclaimerText: "Informasi yang disediakan di situs web ini hanya untuk tujuan informasi umum. Ini tidak dimaksudkan sebagai pengganti saran medis profesional, diagnosis, atau pengobatan.",
     allRightsReserved: "Hak cipta dilindungi undang-undang",
-    // Navigation translations
+    describeSymptoms: "Jelaskan gejala Anda",
+    symptomsPlaceholder: "Mohon jelaskan gejala Anda secara detail...",
+    age: "Usia",
+    agePlaceholder: "Masukkan usia Anda",
+    gender: "Jenis Kelamin",
+    male: "Laki-laki",
+    female: "Perempuan",
+    durationOfSymptoms: "Durasi Gejala",
+    durationPlaceholder: "Sudah berapa lama Anda mengalami gejala ini?",
+    severity: "Tingkat Keparahan",
+    mild: "Ringan",
+    moderate: "Sedang",
+    severe: "Berat",
+    medicalHistory: "Riwayat Medis",
+    medicalHistoryPlaceholder: "Riwayat medis atau kondisi yang relevan...",
+    analyzeSymptoms: "Analisis Gejala",
+    analyzingSymptoms: "Menganalisis...",
     symptoms: "Gejala",
+    symptomCheckerTitle: "Pemeriksa Gejala",
+    symptomCheckerDesc: "Dapatkan penilaian awal gejala Anda",
     qa: "Tanya Jawab",
-    doctor: "Dokter",
+    healthQATitle: "Tanya Jawab Kesehatan",
+    healthQADesc: "Ajukan pertanyaan terkait kesehatan",
+    doctor: "Cari Dokter",
+    findDoctorTitle: "Temukan Dokter",
+    findDoctorDesc: "Cari penyedia layanan kesehatan",
     medication: "Obat",
+    medicationTitle: "Informasi Obat",
+    medicationDesc: "Pelajari tentang obat dan interaksinya",
     allergy: "Alergi",
-    mental: "Mental",
-    vaccine: "Vaksin",
-    blog: "Blog"
+    allergyTitle: "Pemeriksa Alergi",
+    allergyDesc: "Periksa gejala dan pemicu alergi",
+    mental: "Kesehatan Mental",
+    mentalHealthTitle: "Penilaian Kesehatan Mental",
+    mentalHealthDesc: "Sumber daya dan dukungan kesehatan mental"
   }
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState(() => {
-    // Get saved language from localStorage or default to 'en'
     return localStorage.getItem('preferredLanguage') || 'en';
   });
 
   useEffect(() => {
-    // Save language preference when it changes
     localStorage.setItem('preferredLanguage', language);
   }, [language]);
 

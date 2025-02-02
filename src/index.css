@@ -49,6 +49,11 @@
   }
 }
 
+/* Custom styles for radio buttons */
+.radio-group-item {
+  @apply h-4 w-4 rounded-full border border-radio data-[state=checked]:bg-radio data-[state=checked]:border-radio;
+}
+
 @layer utilities {
   .animation-delay-2000 {
     animation-delay: 2s;
