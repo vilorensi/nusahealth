@@ -15,45 +15,42 @@ const QuickAccessSection = () => {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="h-full">
-            <QuickAccessCard
-              to="/symptoms"
-              icon={Stethoscope}
-              title={t('checkSymptoms')}
-              description={t('checkSymptomsDesc')}
-              iconColor="primary"
-              delay={0}
-            />
-          </div>
-          <div className="h-full">
-            <QuickAccessCard
-              to="/find-doctor"
-              icon={Hospital}
-              title={t('findServices')}
-              description={t('findServicesDesc')}
-              iconColor="secondary"
-              delay={200}
-            />
-          </div>
-          <div className="h-full">
-            <QuickAccessCard
-              icon={Phone}
-              title={t('emergency')}
-              description={t('emergencyDesc')}
-              iconColor="accent"
-              delay={400}
-              action={
-                <a
-                  href="tel:119"
-                  className="inline-flex items-center text-secondary hover:text-primary font-semibold text-lg group"
-                >
-                  <Phone className="w-5 h-5 mr-2 transition-transform group-hover:scale-110 animate-wave" />
-                  119
-                </a>
-              }
-            />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 h-full">
+          <QuickAccessCard
+            to="/symptoms"
+            icon={Stethoscope}
+            title={t('checkSymptoms')}
+            description={t('checkSymptomsDesc')}
+            iconColor="primary"
+            delay={0}
+            className="h-full"
+          />
+          <QuickAccessCard
+            to="/find-doctor"
+            icon={Hospital}
+            title={t('findServices')}
+            description={t('findServicesDesc')}
+            iconColor="secondary"
+            delay={200}
+            className="h-full"
+          />
+          <QuickAccessCard
+            icon={Phone}
+            title={t('emergency')}
+            description={t('emergencyDesc')}
+            iconColor="accent"
+            delay={400}
+            className="h-full"
+            action={
+              <a
+                href="tel:119"
+                className="inline-flex items-center text-secondary hover:text-primary font-semibold text-lg group"
+              >
+                <Phone className="w-5 h-5 mr-2 transition-transform group-hover:scale-110 animate-wave" />
+                119
+              </a>
+            }
+          />
         </div>
       </div>
     </div>

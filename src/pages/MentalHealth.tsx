@@ -51,22 +51,17 @@ const MentalHealth = () => {
     try {
       const score = Object.values(answers).reduce((acc, val) => acc + parseInt(val), 0);
       
-      const prompt = `Based on a mental health assessment with a total score of ${score} out of 15 (where higher scores indicate more severe symptoms), provide a brief analysis of the person's current mental health state and suggest specific, actionable steps they can take to improve their wellbeing. Include both immediate coping strategies and long-term recommendations. Keep the response concise and supportive.`;
-
-      const { data, error } = await supabase.functions.invoke('fetch-openai', {
-        body: { 
-          message: prompt,
-          systemPrompt: "You are a compassionate mental health assistant providing initial assessments and recommendations. Always include a disclaimer about seeking professional help when needed. Be supportive and practical in your advice."
-        }
+      const { data, error } = await supabase.functions.invoke('mental-health-assessment', {
+        body: { score, answers }
       });
 
       if (error) throw error;
 
-      if (!data?.choices?.[0]?.message?.content) {
-        throw new Error('Invalid response from AI');
-      }
-
-      setResult(data.choices[0].message.content);
+      setResult(data.analysis);
+      toast({
+        title: "Assessment Complete",
+        description: "Your mental health assessment has been analyzed.",
+      });
     } catch (error) {
       console.error('Error analyzing mental health assessment:', error);
       toast({
@@ -87,7 +82,7 @@ const MentalHealth = () => {
           <CardHeader>
             <CardTitle>Mental Health Assessment</CardTitle>
             <CardDescription>
-              This quick assessment can help determine if you might benefit from professional support.
+              This quick assessment can help determine your current stress levels and provide personalized recommendations.
               Note: This is not a diagnostic tool and should not replace professional medical advice.
             </CardDescription>
           </CardHeader>
