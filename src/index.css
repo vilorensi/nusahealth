@@ -51,7 +51,7 @@
 
 /* Custom styles for radio buttons */
 .radio-group-item {
-  @apply h-4 w-4 rounded-full border border-radio data-[state=checked]:bg-radio data-[state=checked]:border-radio;
+  @apply h-4 w-4 rounded-full border border-black data-[state=checked]:bg-black data-[state=checked]:border-black;
 }
 
 @layer utilities {
