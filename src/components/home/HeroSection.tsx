@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const Cloud = ({ className = "" }: { className?: string }) => (
   <div className={`absolute pointer-events-none opacity-20 ${className}`}>
-    <div className="w-32 h-32 bg-white rounded-full blur-xl" />
+    <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full blur-xl" />
   </div>
 );
 
@@ -74,34 +74,32 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="relative min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-[#F2FCE2]/80 via-white to-[#E2F5E9]/80 overflow-hidden">
-      {/* Subtle background elements */}
+    <div className="relative min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-[#F2FCE2]/80 via-white to-[#E2F5E9]/80 overflow-hidden px-4 md:px-0">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-[0.015]" />
-        <div className="absolute h-64 w-64 -left-32 -top-32 bg-[#F2FCE2] rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob" />
-        <div className="absolute h-64 w-64 -right-32 -bottom-32 bg-[#E2F5E9] rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000" />
-        <div className="absolute h-64 w-64 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#D4F2EA] rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000" />
+        <div className="absolute h-48 w-48 md:h-64 md:w-64 -left-24 -top-24 bg-[#F2FCE2] rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob" />
+        <div className="absolute h-48 w-48 md:h-64 md:w-64 -right-24 -bottom-24 bg-[#E2F5E9] rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000" />
+        <div className="absolute h-48 w-48 md:h-64 md:w-64 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#D4F2EA] rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000" />
         
-        {/* Subtle clouds */}
         <Cloud className="animate-cloud top-1/4" />
         <Cloud className="animate-cloud animation-delay-2000 top-1/3" />
         <Cloud className="animate-cloud animation-delay-4000 top-2/3" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center space-y-8">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight animate-slide-in">
+      <div className="relative z-10 w-full max-w-7xl mx-auto">
+        <div className="text-center space-y-6 md:space-y-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight animate-slide-in px-4">
             <span className="inline-block text-gray-800 drop-shadow-lg">
               {t('welcome')}
             </span>
           </h1>
           
-          <p className="max-w-2xl mx-auto text-xl sm:text-2xl text-gray-700 leading-relaxed animate-slide-in font-medium drop-shadow-sm" style={{ animationDelay: '0.2s' }}>
+          <p className="max-w-2xl mx-auto text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed animate-slide-in font-medium drop-shadow-sm px-4" style={{ animationDelay: '0.2s' }}>
             {t('subtitle')}
           </p>
 
-          <div className="max-w-2xl mx-auto transform hover:scale-105 transition-all duration-300 animate-slide-in" style={{ animationDelay: '0.4s' }}>
-            <div className="flex flex-col sm:flex-row items-center gap-3 bg-white/60 backdrop-blur-md p-3 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+          <div className="max-w-2xl mx-auto px-4 transform hover:scale-105 transition-all duration-300 animate-slide-in" style={{ animationDelay: '0.4s' }}>
+            <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3 bg-white/60 backdrop-blur-md p-3 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="flex items-center flex-1 w-full bg-white/50 rounded-xl px-4 group">
                 <Search className="text-gray-400 group-hover:text-[#A7D7A5] transition-colors" />
                 <input
@@ -110,13 +108,13 @@ const HeroSection = () => {
                   onChange={(e) => setSymptoms(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder={language === 'en' ? 'Describe your symptoms...' : 'Jelaskan gejala Anda...'}
-                  className="w-full p-4 bg-transparent outline-none text-gray-800 placeholder-gray-400 focus:placeholder-[#A7D7A5]/70 transition-all"
+                  className="w-full p-3 md:p-4 bg-transparent outline-none text-gray-800 placeholder-gray-400 focus:placeholder-[#A7D7A5]/70 transition-all"
                 />
               </div>
               <Button 
                 onClick={handleSymptomSearch}
                 disabled={isLoading}
-                className="w-full sm:w-auto bg-gradient-to-r from-[#F2FCE2] to-[#E2F5E9] hover:from-[#E2F5E9] hover:to-[#F2FCE2] text-gray-800 font-medium px-8 py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+                className="w-full sm:w-auto bg-gradient-to-r from-[#F2FCE2] to-[#E2F5E9] hover:from-[#E2F5E9] hover:to-[#F2FCE2] text-gray-800 font-medium px-6 py-3 md:px-8 md:py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
               >
                 {isLoading ? (
                   <>

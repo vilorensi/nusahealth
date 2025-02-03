@@ -18,34 +18,34 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white/80 backdrop-blur-sm shadow-lg">
+    <nav className="bg-white/80 backdrop-blur-sm shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex">
+          <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="text-[#6BA56D] text-xl font-bold hover:text-[#82C17F] transition-colors duration-300">
+              <span className="text-[#6BA56D] text-lg md:text-xl font-bold hover:text-[#82C17F] transition-colors duration-300">
                 nusahealth
               </span>
             </Link>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex lg:items-center lg:space-x-4">
+          <div className="hidden lg:flex lg:items-center lg:space-x-1 xl:space-x-4">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className="flex items-center text-black hover:text-[#82C17F] px-3 py-2 text-sm font-medium transition-colors duration-300"
+                className="flex items-center text-black hover:text-[#82C17F] px-2 xl:px-3 py-2 text-sm font-medium transition-colors duration-300"
               >
-                <item.icon className="w-4 h-4 mr-2" />
+                <item.icon className="w-4 h-4 mr-1.5" />
                 {item.label}
               </Link>
             ))}
             <a
               href="tel:119"
-              className="flex items-center text-black hover:text-[#82C17F] px-3 py-2 text-sm font-medium transition-colors duration-300"
+              className="flex items-center text-black hover:text-[#82C17F] px-2 xl:px-3 py-2 text-sm font-medium transition-colors duration-300"
             >
-              <Phone size={16} className="mr-1" />
+              <Phone size={16} className="mr-1.5" />
               119
             </a>
           </div>
@@ -66,8 +66,8 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="lg:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1">
+        <div className="lg:hidden absolute w-full bg-white/95 backdrop-blur-sm shadow-lg">
+          <div className="px-4 pt-2 pb-3 space-y-1">
             {navItems.map((item) => (
               <Link
                 key={item.path}
@@ -83,7 +83,7 @@ const Navbar = () => {
               href="tel:119"
               className="flex items-center px-3 py-2 rounded-md text-base font-medium text-black hover:text-[#82C17F] transition-colors duration-300"
             >
-              <Phone size={16} className="mr-1" />
+              <Phone size={16} className="mr-2" />
               119
             </a>
           </div>

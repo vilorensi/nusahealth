@@ -6,16 +6,15 @@ const QuickAccessSection = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="relative bg-gradient-to-b from-primary/30 via-secondary/30 to-accent/30 py-24 sm:py-32 overflow-hidden">
-      {/* Subtle background elements */}
+    <div className="relative bg-gradient-to-b from-primary/30 via-secondary/30 to-accent/30 py-16 md:py-24 lg:py-32 overflow-hidden px-4 md:px-6">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute h-[500px] w-[500px] rounded-full bg-primary/20 -left-48 top-0 blur-3xl animate-float" />
-        <div className="absolute h-[400px] w-[400px] rounded-full bg-secondary/20 right-0 bottom-0 blur-3xl animate-float animation-delay-2000" />
-        <div className="absolute h-[300px] w-[300px] rounded-full bg-accent/20 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 blur-3xl animate-float animation-delay-4000" />
+        <div className="absolute h-[300px] w-[300px] md:h-[500px] md:w-[500px] rounded-full bg-primary/20 -left-48 top-0 blur-3xl animate-float" />
+        <div className="absolute h-[250px] w-[250px] md:h-[400px] md:w-[400px] rounded-full bg-secondary/20 right-0 bottom-0 blur-3xl animate-float animation-delay-2000" />
+        <div className="absolute h-[200px] w-[200px] md:h-[300px] md:w-[300px] rounded-full bg-accent/20 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 blur-3xl animate-float animation-delay-4000" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 h-full">
+      <div className="relative max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           <QuickAccessCard
             to="/symptoms"
             icon={Stethoscope}

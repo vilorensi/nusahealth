@@ -7,13 +7,13 @@ const Footer = () => {
 
   return (
     <footer className="bg-gradient-to-b from-[#F2FCE2]/30 to-[#E2F5E9]/30 text-gray-700 mt-20">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <h3 className="font-bold text-lg mb-4 text-gray-800">
               {t('aboutNusaHealth')}
             </h3>
-            <p className="text-gray-700">
+            <p className="text-gray-700 text-sm md:text-base">
               {t('aboutDesc')}
             </p>
           </div>
@@ -23,17 +23,17 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/symptoms" className="text-gray-700 hover:text-[#A7D7A5] transition-colors duration-300">
+                <Link to="/symptoms" className="text-gray-700 hover:text-[#A7D7A5] transition-colors duration-300 text-sm md:text-base">
                   {t('symptomChecker')}
                 </Link>
               </li>
               <li>
-                <Link to="/find-doctor" className="text-gray-700 hover:text-[#A7D7A5] transition-colors duration-300">
+                <Link to="/find-doctor" className="text-gray-700 hover:text-[#A7D7A5] transition-colors duration-300 text-sm md:text-base">
                   {t('findDoctor')}
                 </Link>
               </li>
               <li>
-                <Link to="/health-qa" className="text-gray-700 hover:text-[#A7D7A5] transition-colors duration-300">
+                <Link to="/health-qa" className="text-gray-700 hover:text-[#A7D7A5] transition-colors duration-300 text-sm md:text-base">
                   {t('healthQA')}
                 </Link>
               </li>
@@ -44,11 +44,11 @@ const Footer = () => {
               {t('contactUs')}
             </h3>
             <ul className="space-y-2">
-              <li className="flex items-center gap-2 text-gray-700">
+              <li className="flex items-center gap-2 text-gray-700 text-sm md:text-base">
                 <Mail size={16} />
                 <span>info@nusahealth.id</span>
               </li>
-              <li className="flex items-center gap-2 text-gray-700">
+              <li className="flex items-center gap-2 text-gray-700 text-sm md:text-base">
                 <MapPin size={16} />
                 <span>Jakarta, Indonesia</span>
               </li>
@@ -63,7 +63,7 @@ const Footer = () => {
             </p>
           </div>
         </div>
-        <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-700">
+        <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-700 text-sm">
           <p>&copy; {new Date().getFullYear()} NusaHealth Indonesia. {t('allRightsReserved')}.</p>
         </div>
       </div>
