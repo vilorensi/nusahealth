@@ -44,11 +44,11 @@ const UsabilityScorecard = () => {
     label: string; 
     description: string;
   }) => (
-    <div className="flex items-start space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+    <div className="flex items-start space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200">
       <RadioGroupItem 
         value={value} 
         id={`${category}-${value}`}
-        className="mt-1"
+        className="mt-1 radio-group-item"
       />
       <div className="flex flex-col">
         <Label htmlFor={`${category}-${value}`} className="font-medium text-gray-900">
@@ -141,23 +141,23 @@ const UsabilityScorecard = () => {
   };
 
   return (
-    <Card className="w-full max-w-3xl mx-auto my-8 shadow-lg border-gray-200">
-      <CardHeader className="bg-gradient-to-r from-[#F2FCE2] to-[#E2F5E9] rounded-t-lg">
-        <CardTitle className="text-center text-2xl text-gray-900">
-          {language === 'en' ? "Help Us Improve Our Healthcare Services" : "Bantu Kami Meningkatkan Layanan Kesehatan"}
+    <Card className="w-full max-w-2xl mx-auto my-4 shadow-lg border-gray-200">
+      <CardHeader className="bg-gradient-to-r from-[#F2FCE2] to-[#E2F5E9] rounded-t-lg py-4">
+        <CardTitle className="text-center text-xl text-gray-900">
+          {language === 'en' ? "Rate Our Healthcare Services" : "Nilai Layanan Kesehatan Kami"}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-8 p-6">
+      <CardContent className="space-y-4 p-4">
         {Object.entries(categories).map(([category, { title, question, options }]) => (
-          <div key={category} className="space-y-4 bg-white p-4 rounded-lg border border-gray-100">
+          <div key={category} className="space-y-2 bg-white p-3 rounded-lg border border-gray-100">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-              <p className="text-sm text-gray-600 mt-1">{question}</p>
+              <h3 className="text-base font-semibold text-gray-900">{title}</h3>
+              <p className="text-sm text-gray-600">{question}</p>
             </div>
             <RadioGroup
               value={scores[category as keyof typeof scores]}
               onValueChange={(value) => handleScoreChange(category, value)}
-              className="space-y-3"
+              className="space-y-2"
             >
               <ScoreOption
                 category={category}
@@ -180,10 +180,10 @@ const UsabilityScorecard = () => {
             </RadioGroup>
           </div>
         ))}
-        <div className="flex justify-center pt-4">
+        <div className="flex justify-center pt-2">
           <Button
             onClick={handleSubmit}
-            className="bg-black hover:bg-gray-800 text-white px-8 py-2 rounded-md transition-colors duration-200"
+            className="bg-black hover:bg-gray-800 text-white px-6 py-2 rounded-md transition-colors duration-200"
           >
             {language === 'en' ? "Submit Feedback" : "Kirim Penilaian"}
           </Button>

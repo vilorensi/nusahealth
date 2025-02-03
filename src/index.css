@@ -54,6 +54,11 @@
   @apply h-4 w-4 rounded-full border border-black data-[state=checked]:bg-black data-[state=checked]:border-black;
 }
 
+/* Override any shadcn radio button styles */
+[data-radix-collection-item] {
+  @apply border-black data-[state=checked]:bg-black data-[state=checked]:border-black;
+}
+
 @layer utilities {
   .animation-delay-2000 {
     animation-delay: 2s;
