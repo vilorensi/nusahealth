@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import HeroSection from "../components/home/HeroSection";
 import QuickAccessSection from "../components/home/QuickAccessSection";
+import UsabilityScorecard from "../components/home/UsabilityScorecard";
 import { useLanguage } from "../contexts/LanguageContext";
 
 const Index = () => {
@@ -17,7 +18,6 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-[#C5E1A5]/30 to-white">
       <Navbar />
       
-      {/* Language Switcher */}
       <div className="absolute top-4 right-4 z-50">
         <Button
           variant="outline"
@@ -32,6 +32,9 @@ const Index = () => {
 
       <HeroSection />
       <QuickAccessSection />
+      <div className="container mx-auto px-4 pb-8">
+        <UsabilityScorecard />
+      </div>
       <Footer />
     </div>
   );
