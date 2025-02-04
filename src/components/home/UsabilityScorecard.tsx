@@ -144,7 +144,7 @@ const UsabilityScorecard = () => {
     <Card className="w-full max-w-2xl mx-auto my-4 shadow-lg border-gray-200">
       <CardHeader className="bg-gradient-to-r from-[#F2FCE2] to-[#E2F5E9] rounded-t-lg py-4">
         <CardTitle className="text-center text-xl text-gray-900">
-          {language === 'en' ? "Rate Our Healthcare Services" : "Nilai Layanan Kesehatan Kami"}
+          {language === 'en' ? "Rate Us" : "Nilai Kami"}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 p-4">
